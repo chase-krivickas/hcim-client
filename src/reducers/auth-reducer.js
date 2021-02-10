@@ -10,11 +10,11 @@ const initialState = {
 const AuthReducer = (state = initialState, action) => {
   switch (action.type) {
     case ActionTypes.AUTH_USER:
-      return { authenticated: true, author: action.payload };
+      return { ...state, authenticated: true };
     case ActionTypes.DEAUTH_USER:
-      return { authenticated: false, author: null };
+      return { authenticated: false };
     case ActionTypes.AUTH_ERROR:
-      return { authenticated: false, author: null };
+      return { authenticated: false };
     default:
       return state;
   }
