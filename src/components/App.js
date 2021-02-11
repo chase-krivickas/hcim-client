@@ -2,7 +2,9 @@ import React from "react";
 import Home from "./Home";
 import NotFound from "./NotFound";
 import Login from "./Login";
+import Logout from "./Logout";
 import Navigation from "./Navbar";
+import Dashboard from "./Dashboard";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 import { LinkContainer } from "react-router-bootstrap";
@@ -43,6 +45,8 @@ function App() {
         <Switch>
           <Route exact path="/" component={Home} />
           <Route path="/login" component={Login} />
+          <Route path="/logout" component={Logout} />
+          <Route path="/dashboard" component={Dashboard} />
           <Route component={NotFound} />
         </Switch>
       </div>

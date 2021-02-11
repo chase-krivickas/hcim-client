@@ -7,6 +7,7 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import { Amplify } from 'aws-amplify';
 import config from './config';
 import thunk from 'redux-thunk';
+import { ActionTypes } from './actions/index';
 
 import reducers from './reducers';
 
@@ -42,6 +43,11 @@ Amplify.configure({
     ]
   }
 });
+
+const token = localStorage.getItem('authtoken');
+if (token) {
+  store.dispatch({ type: ActionTypes.AUTH_USER });
+}
 
 // ReactDOM.render(
 //   <React.StrictMode>

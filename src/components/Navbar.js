@@ -6,22 +6,17 @@ import { LinkContainer } from "react-router-bootstrap";
 import "../css/App.css";
 import { connect } from 'react-redux';
 import { logoutUser } from '../actions/index';
+import { Auth } from "aws-amplify";
 
 const mapStateToProps = (reduxState) => ({
     isAuthenticated: reduxState.auth.authenticated,
   });
-
 
 class Navigation extends Component{
     constructor(props) {
         super(props);
     
         this.state = { };
-      }
-    
-    handleLogout = (event) => {
-        event.preventDefault();
-        this.props.logoutUser(this.props.history);
       }
 
     render() {
@@ -37,9 +32,17 @@ class Navigation extends Component{
               <Navbar.Collapse className="justify-content-end">
                 <Nav activeKey={window.location.pathname}>
                   {this.props.isAuthenticated ? (
-                      <LinkContainer to="/signup">
-                        <Nav.Link onClick={this.handleLogout}>Logout</Nav.Link>
+                    <>
+                      <LinkContainer to="/dashboard">
+                        <Nav.Link>Dashboard</Nav.Link>
                       </LinkContainer>
+                      <LinkContainer to="/settings">
+                        <Nav.Link>Settings</Nav.Link>
+                      </LinkContainer>
+                      <LinkContainer to="/logout">
+                        <Nav.Link>Logout</Nav.Link>
+                      </LinkContainer>
+                    </>
                     ) : (
                       <>
                         <LinkContainer to="/signup">

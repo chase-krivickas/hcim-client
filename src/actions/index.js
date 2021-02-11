@@ -20,19 +20,23 @@ export function loginUser({ password, username }, history) {
       .then(response => {
         // success
         dispatch({ type: ActionTypes.AUTH_USER });
-        history.push('/');
+        console.log(response.signInUserSession.accessToken.jwtToken);
+        localStorage.setItem('authtoken', response.signInUserSession.accessToken.jwtToken);
+        history.push('/dashboard');
       }).catch(err => {
         // error
         alert(err.message);
         dispatch(authError(err));
+        history.go(0);
       });
   };
 }
 
 export function logoutUser( history ) {
   return function(dispatch) {
+    localStorage.setItem('authtoken', '');
     dispatch({ type: ActionTypes.DEAUTH_USER });
-    // history.push('/signin');
+    history.push('/');
   }
 }
   

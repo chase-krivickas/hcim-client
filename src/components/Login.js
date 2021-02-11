@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
+import LoaderButton from "./LoaderButton";
 import "../css/Login.css";
 import { Auth } from "aws-amplify";
 import { Component } from "react";
@@ -15,13 +16,17 @@ class Login extends Component {
       username: '',
       password: '',
       emptyFields: false,
+      isLoading: false,
     };
   }
 
   handleSubmit = (event) => {
     event.preventDefault();
+    this.setState({ isLoading: true });
     if (!this.state.password || !this.state.username) {
       this.setState({ emptyFields: true});
+      alert("Make sure all fields are filled in.");
+      this.setState({ isLoading: false });
     } else {
       const data = {
         password: this.state.password,
@@ -78,9 +83,9 @@ class Login extends Component {
               onChange={this.updatePassword}
             />
           </Form.Group>
-          <Button block size="lg" type="submit">
+          <LoaderButton block size="lg" type="submit" isLoading={this.state.isLoading}>
             Login
-          </Button>
+          </LoaderButton>
         </Form>
       </div>
     );
