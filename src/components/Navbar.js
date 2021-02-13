@@ -5,8 +5,6 @@ import Nav from "react-bootstrap/Nav";
 import { LinkContainer } from "react-router-bootstrap";
 import "../css/App.css";
 import { connect } from 'react-redux';
-import { logoutUser } from '../actions/index';
-import { Auth } from "aws-amplify";
 
 const mapStateToProps = (reduxState) => ({
     isAuthenticated: reduxState.auth.authenticated,
@@ -46,10 +44,10 @@ class Navigation extends Component{
                     ) : (
                       <>
                         <LinkContainer to="/signup">
-                          <Nav.Link>Signup</Nav.Link>
+                          <Nav.Link>Sign Up</Nav.Link>
                         </LinkContainer>
                         <LinkContainer to="/login">
-                          <Nav.Link>Login</Nav.Link>
+                          <Nav.Link>Log In</Nav.Link>
                         </LinkContainer>
                       </>
                   )}
@@ -61,4 +59,4 @@ class Navigation extends Component{
     }
 }
 
-export default connect(mapStateToProps, { logoutUser })(Navigation);
+export default connect(mapStateToProps, { })(Navigation);

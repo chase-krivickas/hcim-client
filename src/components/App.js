@@ -5,37 +5,12 @@ import Login from "./Login";
 import Logout from "./Logout";
 import Navigation from "./Navbar";
 import Dashboard from "./Dashboard";
-import Navbar from "react-bootstrap/Navbar";
-import Nav from "react-bootstrap/Nav";
-import { LinkContainer } from "react-router-bootstrap";
+import PrivateRoute from "./PrivateRoute";
+import Settings from "./Settings";
+import Signup from "./Signup";
+import Confirmation from "./Confirmation";
 import "../css/App.css";
-import { BrowserRouter as Router, Route, NavLink, Switch } from 'react-router-dom';
-
-
-// const Navigation = (props) => {
-//   return(
-//     <div>
-//       <Navbar collapseOnSelect bg="light" expand="md" className="mb-3">
-//         <LinkContainer to="/">
-//           <Navbar.Brand className="font-weight-bold text-muted">
-//             Hypertherm
-//           </Navbar.Brand>
-//         </LinkContainer>
-//         <Navbar.Toggle />
-//         <Navbar.Collapse className="justify-content-end">
-//           <Nav activeKey={window.location.pathname}>
-//             <LinkContainer to="/signup">
-//               <Nav.Link>Signup</Nav.Link>
-//             </LinkContainer>
-//             <LinkContainer to="/login">
-//               <Nav.Link>Login</Nav.Link>
-//             </LinkContainer>
-//           </Nav>
-//         </Navbar.Collapse>
-//       </Navbar>
-//     </div>
-//   );
-// };
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 function App() {
   return (
@@ -45,8 +20,11 @@ function App() {
         <Switch>
           <Route exact path="/" component={Home} />
           <Route path="/login" component={Login} />
-          <Route path="/logout" component={Logout} />
-          <Route path="/dashboard" component={Dashboard} />
+          <Route path="/signup" component={Signup} />
+          <Route path="/confirmation" component={Confirmation} />
+          <PrivateRoute path="/logout" component={Logout} />
+          <PrivateRoute path="/dashboard" component={Dashboard} />
+          <PrivateRoute path="/settings" component={Settings} />
           <Route component={NotFound} />
         </Switch>
       </div>
@@ -55,26 +33,3 @@ function App() {
 }
 
 export default App;
-
-
-    // <div className="App container py-3">
-    //   <Navbar collapseOnSelect bg="light" expand="md" className="mb-3">
-    //     <LinkContainer to="/">
-    //       <Navbar.Brand className="font-weight-bold text-muted">
-    //         Hypertherm
-    //       </Navbar.Brand>
-    //     </LinkContainer>
-    //     <Navbar.Toggle />
-    //     <Navbar.Collapse className="justify-content-end">
-    //       <Nav activeKey={window.location.pathname}>
-    //         <LinkContainer to="/signup">
-    //           <Nav.Link>Signup</Nav.Link>
-    //         </LinkContainer>
-    //         <LinkContainer to="/login">
-    //           <Nav.Link>Login</Nav.Link>
-    //         </LinkContainer>
-    //       </Nav>
-    //     </Navbar.Collapse>
-    //   </Navbar>
-    //   <Routes />
-    // </div>

@@ -1,0 +1,116 @@
+import React from "react";
+import Form from "react-bootstrap/Form";
+import LoaderButton from "./LoaderButton";
+import "../css/Signup.css";
+import { Component } from "react";
+import { connect } from 'react-redux';
+import { signUpUser } from '../actions/index';
+
+class Signup extends Component {
+    constructor(props) {
+      super(props);
+  
+      this.state = {
+        username: '',
+        email: '',
+        password: '',
+        confirmPassword: '',
+        emptyFields: false,
+        isLoading: false,
+      };
+    }
+
+    handleSubmit = (event) => {
+      event.preventDefault();
+      this.setState({ isLoading: true });
+      if (!this.state.password || !this.state.username) {
+        this.setState({ emptyFields: true});
+        alert("Make sure all fields are filled in.");
+        this.setState({ isLoading: false });
+      } else if (this.state.password !== this.state.confirmPassword) {
+        this.setState({ emptyFields: true});
+        alert("Passwords do not match.");
+        this.setState({ isLoading: false });
+      } else {
+        const data = {
+          password: this.state.password,
+          username: this.state.username,
+          email: this.state.email,
+        };
+        this.setState({ emptyFields: false });
+        this.props.signUpUser(data, this.props.history);
+      }
+    }
+
+    updateUsername = (event) => {
+      this.setState({ username: event.target.value });
+    }
+
+    updateEmail = (event) => {
+      this.setState({ email: event.target.value });
+    }
+
+    updatePassword = (event) => {
+      this.setState({ password: event.target.value });
+    }
+
+    updateConfirmPassword = (event) => {
+      this.setState({ confirmPassword: event.target.value });
+    }
+
+    render() {
+      return (
+        <div>
+          <div className="lander">
+            <h1>Create Account</h1>
+          </div>
+          <Form onSubmit={this.handleSubmit}>
+            <Form.Group controlId="username" size="lg">
+              <Form.Label>Username</Form.Label>
+              <Form.Control
+                autoFocus
+                type="username"
+                value={ this.state.username }
+                onChange={this.updateUsername}
+              />
+            </Form.Group>
+            <Form.Group controlId="email" size="lg">
+              <Form.Label>Email</Form.Label>
+              <Form.Control
+                type="email"
+                value={ this.state.email }
+                onChange={this.updateEmail}
+              />
+            </Form.Group>
+            <Form.Group controlId="password" size="lg">
+              <Form.Label>Password</Form.Label>
+              <Form.Control
+                type="password"
+                value={ this.state.password }
+                onChange={this.updatePassword}
+              />
+            </Form.Group>
+            <Form.Group controlId="confirmPassword" size="lg">
+              <Form.Label>Confirm Password</Form.Label>
+              <Form.Control
+                type="password"
+                onChange={ this.updateConfirmPassword }
+                value={ this.state.confirmPassword }
+              />
+            </Form.Group>
+            <LoaderButton
+              block
+              size="lg"
+              type="submit"
+              variant="success"
+              isLoading={this.state.isLoading}
+            >
+              Register
+            </LoaderButton>
+          </Form>
+        </div>
+      );
+    }
+}
+
+export default connect(null, { signUpUser })(Signup);

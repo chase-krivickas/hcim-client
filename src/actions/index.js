@@ -14,20 +14,74 @@ export function authError(error) {
   };
 }
 
+export function signUpUser({ password, username, email }, history) {
+  return function(dispatch) {
+    Auth.signUp(username, password, email)
+      .then(response => {
+        // success
+        console.log(response);
+        history.push('/confirmation');
+      }).catch(err => {
+        // error
+        alert(err.message);
+        dispatch(authError(err));
+        history.go(0);
+      });
+  }
+}
+
+export function confirmUser({ email, confirmationCode, username }, history) {
+  return function(dispatch) {
+    console.log(username);
+    console.log(confirmationCode);
+    Auth.confirmSignUp(username, confirmationCode)
+      .then(response => {
+        // success
+        console.log(response);
+        history.push('/login');
+      }).catch(err => {
+        // error
+        alert(err.message);
+        dispatch(authError(err));
+        history.go(0);
+      });
+  }
+}
+
+export function resendConfirmationCode({ email, username }, history) {
+  return function(dispatch) {
+    Auth.resendSignUp(username)
+      .then(response => {
+        // success
+        console.log(response);
+        alert("Confirmation code was sent to " + email);
+        history.go(0);
+      }).catch(err => {
+        // error
+        alert(err.message);
+        dispatch(authError(err));
+        history.go(0);
+      });
+  }
+}
+
 export function loginUser({ password, username }, history) {
   return function(dispatch) {
     Auth.signIn(username, password)
       .then(response => {
         // success
         dispatch({ type: ActionTypes.AUTH_USER });
-        console.log(response.signInUserSession.accessToken.jwtToken);
         localStorage.setItem('authtoken', response.signInUserSession.accessToken.jwtToken);
         history.push('/dashboard');
       }).catch(err => {
         // error
-        alert(err.message);
-        dispatch(authError(err));
-        history.go(0);
+        if (err.code === "UserNotConfirmedException") {
+          history.push('/confirmation');
+        } else {
+          dispatch(authError(err));
+          alert(err.message);
+          history.go(0);
+        }
       });
   };
 }
