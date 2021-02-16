@@ -64,41 +64,18 @@ class Settings extends Component{
     }
 
     submitChange = (event) => {
-      var data = {};
-      if (event.target.value === 'companyName' && this.state.companyName !== '') {
-        data = {
-          companyName: this.state.companyName
-        };
-      }
-      else if (event.target.value === 'addEmail' && this.state.addEmail !== '') {
-        data = {
-          addEmail: this.state.addEmail
-        };
-      }
-      else if (event.target.value === 'removeEmail' && this.state.removeEmail !== '') {
-        data = {
-          removeEmail: this.state.removeEmail
-        };
-      }
-      else if (event.target.value === 'addPermission' && this.state.addPermission !== '') {
-        data = {
-          addPermission: this.state.addPermission
-        };
-      }
-      else if (event.target.value === 'removePermission' && this.state.removePermission !== '') {
-        data = {
-          removePermission: this.state.removePermission
-        };
-      }
-      else if (event.target.value === 'roleName' && this.state.roleName !== this.props.roleName) {
-        data = {
-          roleName: this.state.roleName
-        };
-      }
-      if (data !== {}) {
+      const data = {
+        companyName: (this.state.companyName==='' ? null : this.state.companyName),
+        roleName: (this.state.roleName===this.props.roleName ? null : this.state.roleName),
+        addEmail: (this.state.addEmail==='' ? null : this.state.addEmail),
+        removeEmail: (this.state.removeEmail==='' ? null : this.state.removeEmail),
+        addPermission: (this.state.addPermission==='' ? null : this.state.addPermission),
+        removePermission: (this.state.removePermission==='' ? null : this.state.removePermission)
+      };
+      if (data.companyName!==null || data.roleName!==null || data.addEmail!==null || data.removeEmail!==null || data.addPermission!==null || data.removePermission!==null) {
         console.log(data);
         this.props.updateCompany(data, this.props.history);
-      }
+      };
     }
 
     render() {

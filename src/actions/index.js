@@ -135,14 +135,21 @@ export function logoutUser( history ) {
   }
 }
   
-export function updateCompany( { data }, history ) {
+export function updateCompany( { companyName, roleName, addEmail, removeEmail, addPermission, removePermission }, history ) {
   return function(dispatch) {
     const username = localStorage.getItem('companyId');
+    const data = {
+      companyName: companyName,
+      roleName: roleName,
+      addEmail: addEmail,
+      removeEmail: removeEmail,
+      addPermission: addPermission,
+      removePermission: removePermission, 
+    };
     axios.put(`${ROOT_URL}/companies/update/${username}`, data)
       .then((response) => {
         // success updating
         console.log(response);
-        alert(`Changed ${data}`);
         axios.get(`${ROOT_URL}/companies/${username}`)
           .then((resp) => {
             // success getting user doc
@@ -159,14 +166,12 @@ export function updateCompany( { data }, history ) {
             // error getting user doc
             console.log(error);
             alert(error.message);
-            history.go(0);
           });
       })
       .catch((err) => {
         // error updating
         console.log(err);
         alert(err);
-        history.go(0);
       });
   }
 }
