@@ -15,6 +15,8 @@ class Signup extends Component {
         email: '',
         password: '',
         confirmPassword: '',
+        companyName: '',
+        roleName: '',
         emptyFields: false,
         isLoading: false,
       };
@@ -23,7 +25,7 @@ class Signup extends Component {
     handleSubmit = (event) => {
       event.preventDefault();
       this.setState({ isLoading: true });
-      if (!this.state.password || !this.state.username) {
+      if (!this.state.password || !this.state.username || !this.state.roleName || !this.state.companyName) {
         this.setState({ emptyFields: true});
         alert("Make sure all fields are filled in.");
         this.setState({ isLoading: false });
@@ -36,6 +38,8 @@ class Signup extends Component {
           password: this.state.password,
           username: this.state.username,
           email: this.state.email,
+          companyName: this.state.companyName,
+          roleName: this.state.roleName,
         };
         this.setState({ emptyFields: false });
         this.props.signUpUser(data, this.props.history);
@@ -56,6 +60,15 @@ class Signup extends Component {
 
     updateConfirmPassword = (event) => {
       this.setState({ confirmPassword: event.target.value });
+    }
+
+    updateCompanyName = (event) => {
+      this.setState({ companyName: event.target.value });
+    }
+
+    updateRoleName = (event) => {
+      this.setState({ roleName: event.target.value });
+      console.log(this.state.roleName);
     }
 
     render() {
@@ -97,6 +110,22 @@ class Signup extends Component {
                 onChange={ this.updateConfirmPassword }
                 value={ this.state.confirmPassword }
               />
+            </Form.Group>
+            <Form.Group controlId="companyName" size="lg">
+              <Form.Label>Company Name</Form.Label>
+              <Form.Control
+                type="username"
+                onChange={ this.updateCompanyName }
+                value={ this.state.companyName }
+              />
+            </Form.Group>
+            <Form.Group controlId="exampleForm.ControlSelect2">
+              <Form.Label>Choose your company role</Form.Label>
+              <Form.Control as="select" multiple>
+                <option onClick={ this.updateRoleName}>Hypertherm</option>
+                <option onClick={ this.updateRoleName}>Reseller</option>
+                <option onClick={ this.updateRoleName}>Customer</option>
+              </Form.Control>
             </Form.Group>
             <LoaderButton
               block

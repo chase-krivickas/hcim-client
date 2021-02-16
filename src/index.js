@@ -8,6 +8,7 @@ import { Amplify } from 'aws-amplify';
 import config from './config';
 import thunk from 'redux-thunk';
 import { ActionTypes } from './actions/index';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 import reducers from './reducers';
 
@@ -45,29 +46,17 @@ Amplify.configure({
 });
 
 const token = localStorage.getItem('authtoken');
+const resp = {
+  companyId: localStorage.getItem('companyId'),
+  companyName: localStorage.getItem('companyName'),
+  roleName: localStorage.getItem('roleName'),
+  permissionsList: localStorage.getItem('permissionsList'),
+  alertEmails: localStorage.getItem('alertEmails')
+};
+
 if (token) {
-  store.dispatch({ type: ActionTypes.AUTH_USER });
+  store.dispatch({ type: ActionTypes.AUTH_USER, payload: resp });
 }
-
-// ReactDOM.render(
-//   <React.StrictMode>
-//     <Router>
-//       <App />
-//     </Router>
-//   </React.StrictMode>,
-//   document.getElementById('root')
-// );
-
-// we now wrap App in a Provider
-// ReactDOM.render(
-//   <React.StrictMode>
-//     <Provider store={store}>
-//       <Router>
-//         <App />
-//       </Router>
-//     </Provider>
-//   </React.StrictMode>,
-//   document.getElementById('root'));
 
 ReactDOM.render(
   <Provider store={store}>
@@ -76,10 +65,3 @@ ReactDOM.render(
     </Router>
   </Provider>,
   document.getElementById('root'));
-
-// we now wrap App in a Provider
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-// reportWebVitals();

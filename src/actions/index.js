@@ -1,4 +1,7 @@
 import { Auth } from "aws-amplify";
+import axios from 'axios'; 
+
+export const ROOT_URL = 'https://caqh36ldh2.execute-api.us-east-2.amazonaws.com/dev';
 
 // keys for actiontypes
 export const ActionTypes = {
@@ -14,12 +17,27 @@ export function authError(error) {
   };
 }
 
-export function signUpUser({ password, username, email }, history) {
+export function signUpUser({ password, username, email, roleName, companyName }, history) {
   return function(dispatch) {
     Auth.signUp(username, password, email)
       .then(response => {
-        // success
+        // success, create company entry in database
         console.log(response);
+        const data = {
+          companyId: username,
+          companyName: companyName,
+          alertEmails: [email],
+          roleName: roleName
+        }
+        axios.post(`${ROOT_URL}/companies/create`, data)
+          .then((resp) => {
+            // success
+            console.log(resp);
+          })
+          .catch((error) => {
+            // error
+            console.log(error);
+          });
         history.push('/confirmation');
       }).catch(err => {
         // error
@@ -69,12 +87,30 @@ export function loginUser({ password, username }, history) {
   return function(dispatch) {
     Auth.signIn(username, password)
       .then(response => {
-        // success
-        dispatch({ type: ActionTypes.AUTH_USER });
-        localStorage.setItem('authtoken', response.signInUserSession.accessToken.jwtToken);
-        history.push('/dashboard');
+        // success logging in
+        //  get the user document
+        axios.get(`${ROOT_URL}/companies/${username}`)
+          .then((resp) => {
+            // success getting user doc
+            console.log(resp);
+            dispatch({ type: ActionTypes.AUTH_USER, payload: resp.data });
+            localStorage.setItem('authtoken', response.signInUserSession.accessToken.jwtToken);
+            localStorage.setItem('companyId', resp.data.companyId);
+            localStorage.setItem('companyName', resp.data.companyName);
+            localStorage.setItem('roleName', resp.data.roleName);
+            localStorage.setItem('permissionsList', resp.data.permissionsList);
+            localStorage.setItem('alertEmails', resp.data.alertEmails);
+            history.push('/dashboard');
+          })
+          .catch((error) => {
+            // error getting user doc
+            console.log(error);
+            dispatch(authError(error));
+            alert(error.message);
+            history.go(0);
+          });
       }).catch(err => {
-        // error
+        // error logging in
         if (err.code === "UserNotConfirmedException") {
           history.push('/confirmation');
         } else {
@@ -89,6 +125,11 @@ export function loginUser({ password, username }, history) {
 export function logoutUser( history ) {
   return function(dispatch) {
     localStorage.setItem('authtoken', '');
+    localStorage.setItem('companyId', '');
+    localStorage.setItem('companyName', '');
+    localStorage.setItem('roleName', '');
+    localStorage.setItem('permissionsList', '');
+    localStorage.setItem('alertEmails', '');
     dispatch({ type: ActionTypes.DEAUTH_USER });
     history.push('/');
   }
