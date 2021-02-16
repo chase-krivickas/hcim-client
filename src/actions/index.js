@@ -1,4 +1,4 @@
-import { Auth } from "aws-amplify";
+import { Auth, API } from "aws-amplify";
 import axios from 'axios'; 
 
 export const ROOT_URL = 'https://caqh36ldh2.execute-api.us-east-2.amazonaws.com/dev';
@@ -135,5 +135,40 @@ export function logoutUser( history ) {
   }
 }
   
+export function updateCompany( { data }, history ) {
+  return function(dispatch) {
+    const username = localStorage.getItem('companyId');
+    axios.put(`${ROOT_URL}/companies/update/${username}`, data)
+      .then((response) => {
+        // success updating
+        console.log(response);
+        alert(`Changed ${data}`);
+        axios.get(`${ROOT_URL}/companies/${username}`)
+          .then((resp) => {
+            // success getting user doc
+            console.log(resp);
+            dispatch({ type: ActionTypes.AUTH_USER, payload: resp.data });
+            localStorage.setItem('companyId', resp.data.companyId);
+            localStorage.setItem('companyName', resp.data.companyName);
+            localStorage.setItem('roleName', resp.data.roleName);
+            localStorage.setItem('permissionsList', resp.data.permissionsList);
+            localStorage.setItem('alertEmails', resp.data.alertEmails);
+            history.go(0);
+          })
+          .catch((error) => {
+            // error getting user doc
+            console.log(error);
+            alert(error.message);
+            history.go(0);
+          });
+      })
+      .catch((err) => {
+        // error updating
+        console.log(err);
+        alert(err);
+        history.go(0);
+      });
+  }
+}
   
 

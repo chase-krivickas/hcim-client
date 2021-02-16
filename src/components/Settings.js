@@ -2,10 +2,9 @@ import { Component } from "react";
 import React from "react";
 import "../css/Settings.css";
 import { connect } from 'react-redux';
-import Form from "react-bootstrap/Form";
-import { Container, Col, Row, InputGroup, FormControl, ButtonGroup } from "react-bootstrap";
+import { Container, Col, Row, InputGroup, FormControl, ToggleButtonGroup, ToggleButton } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
-import LoaderButton from "./LoaderButton";
+import { updateCompany } from '../actions/index';
 
 const mapStateToProps = (reduxState) => ({
     isAuthenticated: reduxState.auth.authenticated,
@@ -19,7 +18,6 @@ const mapStateToProps = (reduxState) => ({
 class Settings extends Component{
     constructor(props) {
         super(props);
-    
         this.state = {
           edit: true,
           space: '_______',
@@ -29,11 +27,12 @@ class Settings extends Component{
           addPermission: '',
           removePermission: '',
           isLoading: false,
-          alertEmails: this.props.alertEmails.split(','),
-          permissionsList: this.props.permissionsList.split(','),
+          // alertEmails: this.props.alertEmails.split(','),
+          alertEmails: this.props.alertEmails,
+          // permissionsList: this.props.permissionsList.split(','),
+          permissionsList: this.props.permissionsList,
           roleName: this.props.roleName,
         };
-        
       }
 
     updateEdit = (event) => {
@@ -65,41 +64,40 @@ class Settings extends Component{
     }
 
     submitChange = (event) => {
+      var data = {};
       if (event.target.value === 'companyName' && this.state.companyName !== '') {
-        const data = {
+        data = {
           companyName: this.state.companyName
         };
-        console.log(data);
       }
       else if (event.target.value === 'addEmail' && this.state.addEmail !== '') {
-        const data = {
+        data = {
           addEmail: this.state.addEmail
         };
-        console.log(data);
       }
       else if (event.target.value === 'removeEmail' && this.state.removeEmail !== '') {
-        const data = {
+        data = {
           removeEmail: this.state.removeEmail
         };
-        console.log(data);
       }
       else if (event.target.value === 'addPermission' && this.state.addPermission !== '') {
-        const data = {
+        data = {
           addPermission: this.state.addPermission
         };
-        console.log(data);
       }
       else if (event.target.value === 'removePermission' && this.state.removePermission !== '') {
-        const data = {
+        data = {
           removePermission: this.state.removePermission
         };
-        console.log(data);
       }
       else if (event.target.value === 'roleName' && this.state.roleName !== this.props.roleName) {
-        const data = {
+        data = {
           roleName: this.state.roleName
         };
+      }
+      if (data !== {}) {
         console.log(data);
+        this.props.updateCompany(data, this.props.history);
       }
     }
 
@@ -160,11 +158,11 @@ class Settings extends Component{
                   <Button active={false} variant="Light" disabled={false}>Select different role:</Button>
                 </Col>
                 <Col>
-                  <ButtonGroup aria-label="Basic example">
-                    <Button variant="outline-secondary" value="Hypertherm" onClick={this.updateRoleName}>Hypertherm</Button>
-                    <Button variant="outline-secondary" value="Reseller" onClick={this.updateRoleName}>Reseller</Button>
-                    <Button variant="outline-secondary" value="Customer" onClick={this.updateRoleName}>Customer</Button>
-                  </ButtonGroup>
+                  <ToggleButtonGroup aria-label="Basic example" type="radio" name="options">
+                    <ToggleButton variant="outline-secondary" value="Hypertherm" onClick={this.updateRoleName}>Hypertherm</ToggleButton>
+                    <ToggleButton variant="outline-secondary" value="Reseller" onClick={this.updateRoleName}>Reseller</ToggleButton>
+                    <ToggleButton variant="outline-secondary" value="Customer" onClick={this.updateRoleName}>Customer</ToggleButton>
+                  </ToggleButtonGroup>
                 </Col>
                 <Col>
                   <Button
@@ -189,7 +187,8 @@ class Settings extends Component{
                 <p> </p>
               </Row>
               <Row>
-                <p>{this.state.alertEmails.map((x) => `${x}`).join(', ')}</p>
+                {/* <p>{this.state.alertEmails.split(',').map((x) => `${x}`).join(', ')}</p> */}
+                <p>{this.props.alertEmails}</p>
               </Row>
               <Row>
                 <p> </p>
@@ -237,7 +236,8 @@ class Settings extends Component{
                 <p> </p>
               </Row>
               <Row>
-                <p>{this.state.permissionsList.map((x) => `${x}`).join(', ')}</p>
+                {/* <p>{this.state.permissionsList.split(',').map((x) => `${x}`).join(', ')}</p> */}
+                <p>{this.props.permissionsList}</p>
               </Row>
               <Row>
                 <p> </p>
@@ -494,4 +494,4 @@ class Settings extends Component{
     }
 }
 
-export default connect(mapStateToProps, { })(Settings);
+export default connect(mapStateToProps, { updateCompany })(Settings);
