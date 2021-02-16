@@ -1,4 +1,4 @@
-import { Auth, API } from "aws-amplify";
+import { Auth } from "aws-amplify";
 import axios from 'axios'; 
 
 export const ROOT_URL = 'https://caqh36ldh2.execute-api.us-east-2.amazonaws.com/dev';
