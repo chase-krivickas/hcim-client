@@ -8,7 +8,6 @@ import { Amplify } from 'aws-amplify';
 import config from './config';
 import thunk from 'redux-thunk';
 import { ActionTypes } from './actions/index';
-import 'bootstrap/dist/css/bootstrap.min.css';
 
 import reducers from './reducers';
 
