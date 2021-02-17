@@ -8,6 +8,9 @@ export const ActionTypes = {
     AUTH_USER: 'AUTH_USER',
     DEAUTH_USER: 'DEAUTH_USER',
     AUTH_ERROR: 'AUTH_ERROR',
+    FETCH_PARTS: 'FETCH_PARTS',
+    DO_NOTHING: 'DO_NOTHING',
+    CLEAR_PARTS: 'CLEAR_PARTS',
 };
 
 export function authError(error) {
@@ -175,5 +178,60 @@ export function updateCompany( { companyName, roleName, addEmail, removeEmail, a
       });
   }
 }
-  
+
+export function createPart( { companyId, partId, partName, currCount, minCount, alertEmails }, history) {
+  return function (dispatch) {
+    const data = {
+      companyId: companyId,
+      partId: partId,
+      partName: partName,
+      currCount: currCount,
+      minCount: minCount,
+      alertEmails: alertEmails,
+    }
+    axios.post(`${ROOT_URL}/inv/create`, data)
+      .then((response) => {
+        // success
+        console.log(response);
+        dispatch({ type: ActionTypes.DO_NOTHING});
+        history.push('/dashboard');
+      })
+      .catch((error) => {
+        // error
+        alert(error);
+        history.go(0);
+        console.log(error);
+      });
+  }
+}
+ 
+
+export function fetchParts( { permissionsList } ) {
+  return function (dispatch) {
+    let axiosArray = [];
+    var i;
+    for (i = 0; i < permissionsList.length; i++) {
+      let newPromise = axios.get(`${ROOT_URL}/inv/${permissionsList[i]}`);
+      axiosArray.push(newPromise);
+    }
+
+    axios.all(axiosArray)
+      .then(axios.spread((...responses) => {
+        console.log('here');
+        let response_array = []
+        responses.forEach((res) => {
+          res.data.forEach((r) => {
+            response_array.push(r);
+          });
+        });
+        dispatch({ type: ActionTypes.FETCH_PARTS, payload: response_array });
+        console.log(response_array);
+      }))
+      .catch((error) => {
+        alert(error);
+        console.log(error);
+      });
+  }
+}
+
 
