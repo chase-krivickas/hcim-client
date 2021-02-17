@@ -6,6 +6,7 @@ import Logout from "./Logout";
 import Navigation from "./Navbar";
 import Dashboard from "./Dashboard";
 import PrivateRoute from "./PrivateRoute";
+import Part from "./Part";
 import Settings from "./Settings";
 import Add from "./Add"
 import Signup from "./Signup";
@@ -27,6 +28,7 @@ function App() {
           <PrivateRoute path="/dashboard" component={Dashboard} />
           <PrivateRoute path="/settings" component={Settings} />
           <PrivateRoute path="/add" component={Add} />
+          <PrivateRoute path="/part" component={Part} />
           <Route component={NotFound} />
         </Switch>
       </div>

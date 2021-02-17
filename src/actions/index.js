@@ -11,6 +11,7 @@ export const ActionTypes = {
     FETCH_PARTS: 'FETCH_PARTS',
     DO_NOTHING: 'DO_NOTHING',
     CLEAR_PARTS: 'CLEAR_PARTS',
+    VIEW_PART: 'VIEW_PART',
 };
 
 export function authError(error) {
@@ -179,10 +180,11 @@ export function updateCompany( { companyName, roleName, addEmail, removeEmail, a
   }
 }
 
-export function createPart( { companyId, partId, partName, currCount, minCount, alertEmails }, history) {
+export function createPart( { companyId, partId, partName, companyName, currCount, minCount, alertEmails }, history) {
   return function (dispatch) {
     const data = {
       companyId: companyId,
+      companyName: companyName,
       partId: partId,
       partName: partName,
       currCount: parseInt(currCount),
@@ -231,6 +233,13 @@ export function fetchParts( { permissionsList } ) {
         alert(error);
         console.log(error);
       });
+  }
+}
+
+export function viewPart(part, history) {
+  return function (dispatch) {
+    dispatch({ type: ActionTypes.VIEW_PART, payload: part });
+    history.push('/part');
   }
 }
 

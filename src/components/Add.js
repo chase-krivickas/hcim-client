@@ -35,6 +35,7 @@ class Add extends Component{
       if (this.state.partId !== '' && this.state.partName !== '' ) {
         const data = {
           companyId: this.props.companyId,
+          companyName: this.props.companyName,
           partId: this.state.partId,
           partName: this.state.partName,
           currCount: this.state.currCount,
