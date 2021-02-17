@@ -185,8 +185,8 @@ export function createPart( { companyId, partId, partName, currCount, minCount, 
       companyId: companyId,
       partId: partId,
       partName: partName,
-      currCount: currCount,
-      minCount: minCount,
+      currCount: parseInt(currCount),
+      minCount: parseInt(minCount),
       alertEmails: alertEmails,
     }
     axios.post(`${ROOT_URL}/inv/create`, data)
