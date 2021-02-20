@@ -17,6 +17,10 @@ const AuthReducer = (state = initialState, action) => {
       return { ...state, authenticated: true, companyName: action.payload.companyName,
         companyId: action.payload.companyId, roleName: action.payload.roleName, permissionsList: action.payload.permissionsList,
         alertEmails: action.payload.alertEmails };
+    case ActionTypes.REAUTH_USER:
+      return { ...state, authenticated: true, companyName: action.payload.companyName,
+        companyId: action.payload.companyId, roleName: action.payload.roleName, permissionsList: action.payload.permissionsList,
+        alertEmails: action.payload.alertEmails, parts: action.payload.parts, currentPart: action.payload.currentPart };
     case ActionTypes.DEAUTH_USER:
       return { authenticated: false, companyId: null, companyName: null, roleName: null, permissionsList: [], alertEmails: null, parts: [], currentPart: {} };
     case ActionTypes.FETCH_PARTS:

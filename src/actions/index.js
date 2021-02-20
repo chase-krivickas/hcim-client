@@ -6,6 +6,7 @@ export const ROOT_URL = 'https://caqh36ldh2.execute-api.us-east-2.amazonaws.com/
 // keys for actiontypes
 export const ActionTypes = {
     AUTH_USER: 'AUTH_USER',
+    REAUTH_USER: 'REAUTH_USER',
     DEAUTH_USER: 'DEAUTH_USER',
     AUTH_ERROR: 'AUTH_ERROR',
     FETCH_PARTS: 'FETCH_PARTS',
@@ -104,10 +105,13 @@ export function loginUser({ password, username }, history) {
             localStorage.setItem('roleName', resp.data.roleName);
             localStorage.setItem('permissionsList', resp.data.permissionsList);
             localStorage.setItem('alertEmails', resp.data.alertEmails);
+            localStorage.setItem('parts', JSON.stringify([]));
+            localStorage.setItem('currentPart', JSON.stringify({}));
             history.push('/dashboard');
           })
           .catch((error) => {
             // error getting user doc
+            console.log('inner');
             console.log(error);
             dispatch(authError(error));
             alert(error.message);
@@ -115,6 +119,7 @@ export function loginUser({ password, username }, history) {
           });
       }).catch(err => {
         // error logging in
+        console.log("outer");
         if (err.code === "UserNotConfirmedException") {
           history.push('/confirmation');
         } else {
@@ -134,6 +139,8 @@ export function logoutUser( history ) {
     localStorage.setItem('roleName', '');
     localStorage.setItem('permissionsList', '');
     localStorage.setItem('alertEmails', '');
+    localStorage.setItem('parts', '');
+    localStorage.setItem('currentPart', '');
     dispatch({ type: ActionTypes.DEAUTH_USER });
     history.push('/');
   }
@@ -227,7 +234,7 @@ export function fetchParts( { permissionsList } ) {
           });
         });
         dispatch({ type: ActionTypes.FETCH_PARTS, payload: response_array });
-        console.log(response_array);
+        localStorage.setItem('parts', JSON.stringify(response_array));
       }))
       .catch((error) => {
         alert(error);
@@ -239,8 +246,28 @@ export function fetchParts( { permissionsList } ) {
 export function viewPart(part, history) {
   return function (dispatch) {
     dispatch({ type: ActionTypes.VIEW_PART, payload: part });
+    localStorage.setItem('currentPart', JSON.stringify(part));
     history.push('/part');
   }
 }
 
+export function updatePart( { currCount, minCount, companyId, partId }, history) {
+  return function (dispatch) {
+    const data = {
+      currCount: parseInt(currCount),
+      minCount: parseInt(minCount),
+    }
+    axios.put(`${ROOT_URL}/inv/update/${companyId}/${partId}`, data)
+      .then((response) => {
+        // success
+        console.log(response);
+        history.push('/dashboard');
+      })
+      .catch((error) => {
+        // error
+        alert(error);
+        console.log(error);
+      });
+  }
+}
 

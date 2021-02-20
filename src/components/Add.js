@@ -24,7 +24,7 @@ class Add extends Component{
             partId: '',
             partName: '',
             currCount: 0,
-            minCount: 0,
+            minCount: 1,
             isLoading: false,
         };
     }

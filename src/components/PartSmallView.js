@@ -32,6 +32,7 @@ class PartSmallView extends Component{
             <td>{this.props.part.currCount}</td>
             <td>{this.props.part.minCount}</td>
             <td>{this.props.part.companyName}</td>
+            <td>{this.props.part.companyId}</td>
         </tr>
       )
   }

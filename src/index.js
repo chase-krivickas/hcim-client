@@ -45,16 +45,18 @@ Amplify.configure({
 });
 
 const token = localStorage.getItem('authtoken');
-const resp = {
-  companyId: localStorage.getItem('companyId'),
-  companyName: localStorage.getItem('companyName'),
-  roleName: localStorage.getItem('roleName'),
-  permissionsList: localStorage.getItem('permissionsList'),
-  alertEmails: localStorage.getItem('alertEmails')
-};
 
 if (token) {
-  store.dispatch({ type: ActionTypes.AUTH_USER, payload: resp });
+  const resp = {
+    companyId: localStorage.getItem('companyId'),
+    companyName: localStorage.getItem('companyName'),
+    roleName: localStorage.getItem('roleName'),
+    permissionsList: localStorage.getItem('permissionsList'),
+    alertEmails: localStorage.getItem('alertEmails'),
+    parts: JSON.parse(localStorage.getItem('parts')) || [],
+    currentPart: JSON.parse(localStorage.getItem('currentPart')) || {},
+  };
+  store.dispatch({ type: ActionTypes.REAUTH_USER, payload: resp });
 }
 
 ReactDOM.render(
