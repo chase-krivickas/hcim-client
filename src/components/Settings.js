@@ -63,6 +63,10 @@ class Settings extends Component{
       this.setState({ roleName: event.target.value });
     }
 
+    goToChangePassword = (event) => {
+      this.props.history.push("/changePassword");
+    }
+
     submitChange = (event) => {
       const data = {
         companyName: (this.state.companyName==='' ? null : this.state.companyName),
@@ -84,6 +88,7 @@ class Settings extends Component{
             <div className="lander">
                <h1>Account Settings</h1>
              </div>
+
              <Container>
                <Row>
                  <h5>Company: {this.props.companyName}</h5>
@@ -96,6 +101,9 @@ class Settings extends Component{
                </Row>
                
              </Container>
+
+             <div onClick={this.goToChangePassword}>Change Password</div>
+
 
             {this.props.roleName!=="Customer" ? (
               <>

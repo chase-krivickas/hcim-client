@@ -8,3 +8,9 @@
       max-width: 320px;
     }
   }
+
+  #forgotPassword {
+    color: grey;
+    text-decoration: underline;
+    text-align: center;
+  }
