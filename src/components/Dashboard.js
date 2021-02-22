@@ -102,11 +102,18 @@ class Dashboard extends Component{
   render() {
       return(
         <div>
-          <Button
-            onClick={this.goToAdd}
-          >
-            Add Part for Tracking
-          </Button>
+          { this.props.roleName==="Customer" ? (
+            <>
+            <Button
+              onClick={this.goToAdd}
+            >
+              Add Part for Tracking
+            </Button>
+          </>
+          ):(
+            <>
+            </>
+          )}
 
           { this.props.roleName==="Customer" ? (
             <>
