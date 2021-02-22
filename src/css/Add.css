@@ -1,0 +1,16 @@
+@media all and (min-width: 480px) {
+    .Add {
+      padding: 20px 0;
+      padding-bottom: 60px;
+    }
+  
+    .Add form {
+      margin: 0 auto;
+      max-width: 500px;
+    }
+  }
+
+#header {
+    align-items: center;
+    text-align: center;
+}
