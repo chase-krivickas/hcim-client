@@ -3,8 +3,9 @@ import React from "react";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 import { LinkContainer } from "react-router-bootstrap";
-import "../css/App.css";
+import "../css/Navbar.css";
 import { connect } from 'react-redux';
+import logo from "../media/hypertherm_logo.png";
 
 const mapStateToProps = (reduxState) => ({
     isAuthenticated: reduxState.auth.authenticated,
@@ -23,7 +24,8 @@ class Navigation extends Component{
             <Navbar collapseOnSelect bg="light" expand="md" className="mb-3">
               <LinkContainer to="/">
                 <Navbar.Brand className="font-weight-bold text-muted">
-                  Hypertherm
+                  
+                  <img id="sub_logo" src={logo} alt="Hypertherm logo"/>
                 </Navbar.Brand>
               </LinkContainer>
               <Navbar.Toggle />

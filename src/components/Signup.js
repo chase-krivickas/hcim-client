@@ -73,11 +73,10 @@ class Signup extends Component {
 
     render() {
       return (
-        <div>
-          <div className="lander">
-            <h1>Create Account</h1>
-          </div>
+        <div className="Signup">
+
           <Form onSubmit={this.handleSubmit}>
+            <h1 id="heading">Create Account</h1>
             <Form.Group controlId="username" size="lg">
               <Form.Label>Username</Form.Label>
               <Form.Control
@@ -131,7 +130,7 @@ class Signup extends Component {
               block
               size="lg"
               type="submit"
-              variant="success"
+              variant="danger"
               isLoading={this.state.isLoading}
             >
               Register
