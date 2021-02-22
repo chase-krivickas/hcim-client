@@ -2,10 +2,11 @@ import { Component } from "react";
 import React from "react";
 import { connect } from 'react-redux';
 import { createPart } from '../actions/index';
-import { Container } from "react-bootstrap";
+import { Row, Col, Container, Dropdown, DropdownButton } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 import LoaderButton from "./LoaderButton";
 import Button from "react-bootstrap/Button";
+import partsList from "./partsList";
 
 const mapStateToProps = (reduxState) => ({
     isAuthenticated: reduxState.auth.authenticated,
@@ -13,7 +14,8 @@ const mapStateToProps = (reduxState) => ({
     companyName: reduxState.auth.companyName,
     roleName: reduxState.auth.roleName,
     permissionsList: reduxState.auth.permissionsList,
-    alertEmails: reduxState.auth.alertEmails
+    alertEmails: reduxState.auth.alertEmails,
+    parts: reduxState.auth.parts,
 });
 
 class Add extends Component{
@@ -26,26 +28,39 @@ class Add extends Component{
             currCount: 0,
             minCount: 1,
             isLoading: false,
+            field: 'Part',
         };
     }
 
     handleSubmit = (event) => {
       event.preventDefault();
       this.setState({ isLoading: true });
-      if (this.state.partId !== '' && this.state.partName !== '' ) {
-        const data = {
-          companyId: this.props.companyId,
-          companyName: this.props.companyName,
-          partId: this.state.partId,
-          partName: this.state.partName,
-          currCount: this.state.currCount,
-          minCount: this.state.minCount,
-          alertEmails: this.props.alertEmails,
-        };
-        this.props.createPart(data, this.props.history);
-      } else {
-        alert("Make sure all fields are filled in.");
+
+      var stop = false;
+      for (var i = 0; i < this.props.parts.length; i++) {
+        if (this.props.parts[i].partId === this.state.partId) {
+          stop = true;
+        }
+      }
+      if (stop) {
+        alert("Cannot add part. This part is already being tracked.")
         this.setState({ isLoading: false });
+      } else {
+        if (this.state.partId !== '' && this.state.partName !== '' ) {
+          const data = {
+            companyId: this.props.companyId,
+            companyName: this.props.companyName,
+            partId: this.state.partId,
+            partName: this.state.partName,
+            currCount: this.state.currCount,
+            minCount: this.state.minCount,
+            alertEmails: this.props.alertEmails,
+          };
+          this.props.createPart(data, this.props.history);
+        } else {
+          alert("Make sure all fields are filled in.");
+          this.setState({ isLoading: false });
+        }
       }
     }
 
@@ -69,12 +84,44 @@ class Add extends Component{
         this.setState({ minCount: event.target.value });
     }
 
+    updateField= (event) => {
+      const p = event.split("-")
+      this.setState({
+        field: event,
+        partId: p[1].trim(),
+        partName: p[0].trim(),
+      });
+    }
+
+    populateDropdown() {
+      return partsList.map((part) => {
+        return (<Dropdown.Item key={part.partId} eventKey={`${part.partName} - ${part.partId}`}>{part.partName} - {part.partId}</Dropdown.Item>);
+      });
+    }
+
     render() {
         return(
           <div>
               <Container>
                   <h3>Add a new consumable part to be tracked.</h3>
               </Container>
+
+              <Row>
+                <Col>
+                  <h4>Select a part:</h4>
+                </Col>
+                <Col>
+                  <DropdownButton
+                    variant="outline-secondary"
+                    title={this.state.field}
+                    id="input-group-dropdown-1"
+                    onSelect={this.updateField}
+                  >
+                    {this.populateDropdown()}
+                  </DropdownButton>
+                </Col>
+              </Row>
+
               <Form>
                 <Form.Group size="lg">
                   <Form.Label>Part Name</Form.Label>
@@ -128,7 +175,7 @@ class Add extends Component{
             <Button
               onClick={this.toDashboard}
             >
-              Back to Dashboard
+              Cancel
             </Button>
           </div>
         )

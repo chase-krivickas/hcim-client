@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import Button from "react-bootstrap/Button";
 import { fetchParts } from '../actions/index';
 import PartSmallView from './PartSmallView';
-import { Table, InputGroup, DropdownButton, Dropdown, FormControl } from "react-bootstrap";
+import { Table, InputGroup, DropdownButton, Dropdown, FormControl, Col, Row } from "react-bootstrap";
 
 
 const mapStateToProps = (reduxState) => ({
@@ -42,6 +42,7 @@ class Dashboard extends Component{
     const temp  = localStorage.getItem('permissionsList');
     const data = {
       permissionsList: temp.split(","),
+      roleName: this.props.roleName,
     }
     this.props.fetchParts(data);
   }
@@ -66,6 +67,14 @@ class Dashboard extends Component{
     return partsList.map((part) => {
       return (<PartSmallView key={part.companyId+part.partId} part={part} hist={this.props.hist} />);
     });
+  }
+
+  refresh = (event) => {
+    const temp  = localStorage.getItem('permissionsList');
+    const data = {
+      permissionsList: temp.split(","),
+    }
+    this.props.fetchParts(data);
   }
 
   search = (event) => {
@@ -102,11 +111,18 @@ class Dashboard extends Component{
   render() {
       return(
         <div>
-          <Button
-            onClick={this.goToAdd}
-          >
-            Add Part for Tracking
-          </Button>
+          { this.props.roleName==="Customer" ? (
+            <>
+            <Button
+              onClick={this.goToAdd}
+            >
+              Add Part for Tracking
+            </Button>
+          </>
+          ):(
+            <>
+            </>
+          )}
 
           { this.props.roleName==="Customer" ? (
             <>
@@ -164,10 +180,18 @@ class Dashboard extends Component{
             </>
           )}
           
-
-          <Button onClick={this.clearSearch}>
-            Clear Search
-          </Button>
+          <Row>
+            <Col>
+              <Button onClick={this.refresh}>
+                Refresh
+              </Button>
+            </Col>
+            <Col>
+              <Button onClick={this.clearSearch}>
+                Clear Search
+              </Button>
+            </Col>
+          </Row>
 
           <Table striped bordered hover size="sm">
             <thead>

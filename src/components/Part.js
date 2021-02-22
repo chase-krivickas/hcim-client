@@ -3,7 +3,8 @@ import React from "react";
 import "../css/Settings.css";
 import { connect } from 'react-redux';
 import { Container, Col, Row, InputGroup, FormControl, Button } from "react-bootstrap";
-import { updatePart } from '../actions/index';
+import { updatePart, deletePart } from '../actions/index';
+import { CanvasJSChart } from 'canvasjs-react-charts';
 
 
 const mapStateToProps = (reduxState) => ({
@@ -20,6 +21,16 @@ const mapStateToProps = (reduxState) => ({
 class Part extends Component{
   constructor(props) {
       super(props);
+
+      var data = []
+      for (var i = 0; i < this.props.currentPart.history.length; i ++) {
+        const date = new Date(this.props.currentPart.history[i].day)
+        const point = {
+            x: date,
+            y: this.props.currentPart.history[i].count,
+        };
+        data.push(point);
+      }
   
       this.state = {
         parts: [],
@@ -28,6 +39,8 @@ class Part extends Component{
         buttonValue: 'Edit',
         minCount: '',
         currCount: '',
+        data: data, 
+        delete: '', 
       };
   }
 
@@ -48,7 +61,6 @@ class Part extends Component{
             data.minCount = this.state.minCount
         }
         if (data.currCount !== null || data.minCount !== null) {
-            console.log(data);
             this.props.updatePart(data, this.props.history);
         }
         this.setState({ buttonValue: 'Edit'});
@@ -66,8 +78,23 @@ class Part extends Component{
     this.setState({ minCount: event.target.value });
   }
 
+  updateDelete = (event) => {
+    this.setState({ delete: event.target.value });
+  }
+
   goToDash = (event) => {
     this.props.history.push('/dashboard');
+  }
+
+  deleteEntry = (event) => {
+      if (this.state.delete === "delete" || this.state.delete === "Delete") {
+          console.log("delete");
+          const data = {
+              companyId: this.props.companyId,
+              partId: this.props.currentPart.partId,
+          }
+          this.props.deletePart(data, this.props.history);
+      }
   }
 
   render() {
@@ -85,23 +112,39 @@ class Part extends Component{
                 <Row>
                     <h5>Part Id: {this.props.currentPart.partId}</h5>
                 </Row>
-                <Row>
-                    <Col>
-                    <img
-                        width={64}
-                        height={64}
-                        className="mr-3"
-                        alt="Generic placeholder"
-                    />
-                    <p>{JSON.stringify(this.props.currentPart.history)}</p>
-                    <Row>
-                            <Button>
-                                Export data to .csv
-                            </Button>
-                        </Row>
-                    </Col>
 
-                    <Col>
+                <Row>
+                    <CanvasJSChart options={
+                        {
+                            title:{
+                              text: (String(this.props.currentPart.partName) + " Inventory"),
+                              fontFamily: "tahoma",
+                          },
+                          axisX:{
+                              title: "",
+                              gridThickness: 1
+                          },
+                          axisY: {
+                              title: "Inventory Count"
+                          },
+                          data: [
+                          {        
+                              type: "area",
+                              fillOpacity: .1, 
+                              dataPoints: this.state.data,
+                          }
+                          ]
+                      }
+                    }/>
+                </Row>
+
+                <Row>
+                    <Button>
+                        Export to .csv
+                    </Button>
+                </Row>
+
+                    <Row>
                         <InputGroup className="mb-3">
                             <InputGroup.Prepend>
                                 <InputGroup.Text id="basic-addon1">Current Count</InputGroup.Text>
@@ -131,8 +174,29 @@ class Part extends Component{
                                 {this.state.buttonValue}
                             </Button>
                         </Row>
-                    </Col>
-                </Row>
+                    </Row>
+
+
+                    <Row>
+                        <label htmlFor="basic-url">To delete data, type "delete" and click the delete button.</label>
+                        <InputGroup className="mb-3">
+                          <FormControl
+                            placeholder=""
+                            aria-label="Recipient's username"
+                            aria-describedby="basic-addon2"
+                            onChange={this.updateDelete}
+                          />
+                          <InputGroup.Append>
+                            <Button variant="outline-secondary"
+                            onClick={this.deleteEntry}
+                            value={'Delete'}
+                            >
+                              Delete</Button>
+                          </InputGroup.Append>
+                        </InputGroup>
+                    </Row>
+
+
             </Container>
             ):(
                 <Container>
@@ -147,14 +211,39 @@ class Part extends Component{
                     <h5>Part Id: {this.props.currentPart.partId}</h5>
                 </Row>
                 <Row>
+                    <h5> Company Name: {this.props.currentPart.companyName}</h5>
+                </Row>
+                <Row>
+                    <h5> Company Id: {this.props.currentPart.companyId}</h5>
+                </Row>
+
+                <Row>
+                    <CanvasJSChart options={
+                        {
+                            title:{
+                              text: (String(this.props.currentPart.partName) + " Inventory"),
+                              fontFamily: "tahoma",
+                          },
+                          axisX:{
+                              title: "",
+                              gridThickness: 1
+                          },
+                          axisY: {
+                              title: "Inventory Count"
+                          },
+                          data: [
+                          {        
+                              type: "area",
+                              fillOpacity: .1, 
+                              dataPoints: this.state.data,
+                          }
+                          ]
+                      }
+                    }/>
+                </Row>
+
+                <Row>
                     <Col>
-                    <img
-                        width={64}
-                        height={64}
-                        className="mr-3"
-                        alt="Generic placeholder"
-                    />
-                    <p>{JSON.stringify(this.props.currentPart.history)}</p>
                     <Row>
                             <Button>
                                 Export data to .csv
@@ -170,4 +259,4 @@ class Part extends Component{
   }
 }
 
-export default connect(mapStateToProps, { updatePart })(Part);
+export default connect(mapStateToProps, { updatePart, deletePart })(Part);

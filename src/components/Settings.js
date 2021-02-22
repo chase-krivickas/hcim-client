@@ -84,6 +84,18 @@ class Settings extends Component{
             <div className="lander">
                <h1>Account Settings</h1>
              </div>
+             <Container>
+               <Row>
+                 <h5>Company: {this.props.companyName}</h5>
+               </Row>
+               <Row>
+                 <h5>Company Id: {this.props.companyId}</h5>
+               </Row>
+               <Row>
+                 <h5>Role: {this.props.roleName}</h5>
+               </Row>
+               
+             </Container>
 
             {this.props.roleName!=="Customer" ? (
               <>
