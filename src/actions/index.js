@@ -122,6 +122,26 @@ export function resetPassword({ username, code, password }, history) {
   }
 }
 
+export function changePassword({ oldPassword, newPassword }, history) {
+  return function(dispatch) {
+    Auth.currentAuthenticatedUser()
+      .then(user => {
+        Auth.changePassword(user, oldPassword, newPassword)
+        .then(response => {
+          // success
+          console.log("password changed");
+          console.log(response);
+          history.push('/settings');
+        }).catch(err => {
+          // error
+          alert(err.message);
+          dispatch(authError(err));
+          history.go(0);
+        });
+      }).catch(err => console.log(err));
+  }
+}
+
 export function loginUser({ password, username }, history) {
   return function(dispatch) {
     Auth.signIn(username, password)

@@ -23,12 +23,13 @@ class ForgotPassword extends Component {
     handleSubmit = (event) => {
         event.preventDefault();
         this.setState({ isLoading: true });
-        console.log(this.state.password);
-        console.log(this.state.username);
-        console.log(this.state.confirmationCode);
         if (!this.state.confirmationCode || !this.state.username || !this.state.password) {
             this.setState({ emptyFields: true });
             alert("Make sure all fields are filled in.");
+            this.setState({ isLoading: false });
+        } else if (this.state.password !== this.state.confirmPassword) {
+            this.setState({ emptyFields: true});
+            alert("Passwords do not match.");
             this.setState({ isLoading: false });
         } else {
             const data = {
