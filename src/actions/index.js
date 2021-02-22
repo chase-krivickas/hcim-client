@@ -88,6 +88,40 @@ export function resendConfirmationCode({ email, username }, history) {
   }
 }
 
+export function forgotPassword({ username }, history) {
+  return function(dispatch) {
+    Auth.forgotPassword(username)
+      .then(response => {
+        // success
+        console.log("code sent");
+        console.log(response);
+        // history.push('/login');
+      }).catch(err => {
+        // error
+        alert(err.message);
+        dispatch(authError(err));
+        history.go(0);
+      });
+  }
+}
+
+export function resetPassword({ username, code, password }, history) {
+  return function(dispatch) {
+    Auth.forgotPasswordSubmit(username, code, password)
+      .then(response => {
+        // success
+        console.log("password reset");
+        console.log(response);
+        history.push('/login');
+      }).catch(err => {
+        // error
+        alert(err.message);
+        dispatch(authError(err));
+        history.go(0);
+      });
+  }
+}
+
 export function loginUser({ password, username }, history) {
   return function(dispatch) {
     Auth.signIn(username, password)

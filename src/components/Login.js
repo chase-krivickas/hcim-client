@@ -43,6 +43,10 @@ class Login extends Component {
     this.setState({ password: event.target.value });
   }
 
+  forgotPassword = (event) => {
+    this.props.history.push('/forgotPassword');
+  }
+
   render() {
     return (
       <div className="Login">
@@ -68,6 +72,7 @@ class Login extends Component {
             Login
           </LoaderButton>
         </Form>
+        <div id="forgotPassword" onClick={this.forgotPassword}>Forgot Password</div>
       </div>
     );
   }
