@@ -14,7 +14,8 @@ const mapStateToProps = (reduxState) => ({
     companyName: reduxState.auth.companyName,
     roleName: reduxState.auth.roleName,
     permissionsList: reduxState.auth.permissionsList,
-    alertEmails: reduxState.auth.alertEmails
+    alertEmails: reduxState.auth.alertEmails,
+    parts: reduxState.auth.parts,
 });
 
 class Add extends Component{
@@ -34,20 +35,32 @@ class Add extends Component{
     handleSubmit = (event) => {
       event.preventDefault();
       this.setState({ isLoading: true });
-      if (this.state.partId !== '' && this.state.partName !== '' ) {
-        const data = {
-          companyId: this.props.companyId,
-          companyName: this.props.companyName,
-          partId: this.state.partId,
-          partName: this.state.partName,
-          currCount: this.state.currCount,
-          minCount: this.state.minCount,
-          alertEmails: this.props.alertEmails,
-        };
-        this.props.createPart(data, this.props.history);
-      } else {
-        alert("Make sure all fields are filled in.");
+
+      var stop = false;
+      for (var i = 0; i < this.props.parts.length; i++) {
+        if (this.props.parts[i].partId === this.state.partId) {
+          stop = true;
+        }
+      }
+      if (stop) {
+        alert("Cannot add part. This part is already being tracked.")
         this.setState({ isLoading: false });
+      } else {
+        if (this.state.partId !== '' && this.state.partName !== '' ) {
+          const data = {
+            companyId: this.props.companyId,
+            companyName: this.props.companyName,
+            partId: this.state.partId,
+            partName: this.state.partName,
+            currCount: this.state.currCount,
+            minCount: this.state.minCount,
+            alertEmails: this.props.alertEmails,
+          };
+          this.props.createPart(data, this.props.history);
+        } else {
+          alert("Make sure all fields are filled in.");
+          this.setState({ isLoading: false });
+        }
       }
     }
 

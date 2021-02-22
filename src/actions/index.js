@@ -215,31 +215,48 @@ export function createPart( { companyId, partId, partName, companyName, currCoun
 }
  
 
-export function fetchParts( { permissionsList } ) {
+export function fetchParts( { permissionsList, roleName } ) {
   return function (dispatch) {
-    let axiosArray = [];
-    var i;
-    for (i = 0; i < permissionsList.length; i++) {
-      let newPromise = axios.get(`${ROOT_URL}/inv/${permissionsList[i]}`);
-      axiosArray.push(newPromise);
-    }
-
-    axios.all(axiosArray)
-      .then(axios.spread((...responses) => {
-        console.log('here');
-        let response_array = []
-        responses.forEach((res) => {
-          res.data.forEach((r) => {
-            response_array.push(r);
-          });
+    if (roleName === "Hypertherm") {
+      // hypertherm 
+      axios.get(`${ROOT_URL}/inv/gettable`)
+        .then((response) => {
+          // success
+          console.log(response.data);
+          dispatch({ type: ActionTypes.FETCH_PARTS, payload: response.data });
+          localStorage.setItem('parts', JSON.stringify(response.data));
+        })
+        .catch((error) => {
+          // error
+          alert(error);
+          console.log(error);
         });
-        dispatch({ type: ActionTypes.FETCH_PARTS, payload: response_array });
-        localStorage.setItem('parts', JSON.stringify(response_array));
-      }))
-      .catch((error) => {
-        alert(error);
-        console.log(error);
-      });
+    } else {
+      // customer or reseller
+      let axiosArray = [];
+      var i;
+      for (i = 0; i < permissionsList.length; i++) {
+        let newPromise = axios.get(`${ROOT_URL}/inv/${permissionsList[i]}`);
+        axiosArray.push(newPromise);
+      }
+
+      axios.all(axiosArray)
+        .then(axios.spread((...responses) => {
+          console.log('here');
+          let response_array = []
+          responses.forEach((res) => {
+            res.data.forEach((r) => {
+              response_array.push(r);
+            });
+          });
+          dispatch({ type: ActionTypes.FETCH_PARTS, payload: response_array });
+          localStorage.setItem('parts', JSON.stringify(response_array));
+        }))
+        .catch((error) => {
+          alert(error);
+          console.log(error);
+        });
+      }
   }
 }
 
@@ -258,6 +275,22 @@ export function updatePart( { currCount, minCount, companyId, partId }, history)
       minCount: parseInt(minCount),
     }
     axios.put(`${ROOT_URL}/inv/update/${companyId}/${partId}`, data)
+      .then((response) => {
+        // success
+        console.log(response);
+        history.push('/dashboard');
+      })
+      .catch((error) => {
+        // error
+        alert(error);
+        console.log(error);
+      });
+  }
+}
+
+export function deletePart( { companyId, partId }, history) {
+  return function (dsipatch) {
+    axios.delete(`${ROOT_URL}/inv/${companyId}/${partId}`)
       .then((response) => {
         // success
         console.log(response);

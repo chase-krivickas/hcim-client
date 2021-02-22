@@ -3,7 +3,7 @@ import React from "react";
 import "../css/Settings.css";
 import { connect } from 'react-redux';
 import { Container, Col, Row, InputGroup, FormControl, Button } from "react-bootstrap";
-import { updatePart } from '../actions/index';
+import { updatePart, deletePart } from '../actions/index';
 import { CanvasJSChart } from 'canvasjs-react-charts';
 
 
@@ -39,7 +39,8 @@ class Part extends Component{
         buttonValue: 'Edit',
         minCount: '',
         currCount: '',
-        data: data,  
+        data: data, 
+        delete: '', 
       };
   }
 
@@ -77,8 +78,23 @@ class Part extends Component{
     this.setState({ minCount: event.target.value });
   }
 
+  updateDelete = (event) => {
+    this.setState({ delete: event.target.value });
+  }
+
   goToDash = (event) => {
     this.props.history.push('/dashboard');
+  }
+
+  deleteEntry = (event) => {
+      if (this.state.delete === "delete" || this.state.delete === "Delete") {
+          console.log("delete");
+          const data = {
+              companyId: this.props.companyId,
+              partId: this.props.currentPart.partId,
+          }
+          this.props.deletePart(data, this.props.history);
+      }
   }
 
   render() {
@@ -159,6 +175,28 @@ class Part extends Component{
                             </Button>
                         </Row>
                     </Row>
+
+
+                    <Row>
+                        <label htmlFor="basic-url">To delete data, type "delete" and click the delete button.</label>
+                        <InputGroup className="mb-3">
+                          <FormControl
+                            placeholder=""
+                            aria-label="Recipient's username"
+                            aria-describedby="basic-addon2"
+                            onChange={this.updateDelete}
+                          />
+                          <InputGroup.Append>
+                            <Button variant="outline-secondary"
+                            onClick={this.deleteEntry}
+                            value={'Delete'}
+                            >
+                              Delete</Button>
+                          </InputGroup.Append>
+                        </InputGroup>
+                    </Row>
+
+
             </Container>
             ):(
                 <Container>
@@ -221,4 +259,4 @@ class Part extends Component{
   }
 }
 
-export default connect(mapStateToProps, { updatePart })(Part);
+export default connect(mapStateToProps, { updatePart, deletePart })(Part);
