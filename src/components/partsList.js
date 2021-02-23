@@ -106,7 +106,35 @@ export const partsList = [
     {
         partId: 420200,
         partName: "Shield Cap (30-300 A)"
-    } 
+    },
+    {
+        partId: 420228,
+        partName: "Shield (30 A))"
+    },
+    {
+        partId: 420237,
+        partName: "Shield (50 A))"
+    },
+    {
+        partId: 420246,
+        partName: "Shield (80 A))"
+    },
+    {
+        partId: 420255,
+        partName: "Shield (130 A))"
+    },
+    {
+        partId: 420513,
+        partName: "Shield (170 A))"
+    },
+    {
+        partId: 420273,
+        partName: "Shield (220 A))"
+    },
+    {
+        partId: 420491,
+        partName: "Shield (300 A))"
+    }
 ];
 
 export default partsList;

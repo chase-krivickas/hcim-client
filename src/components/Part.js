@@ -98,7 +98,7 @@ class Part extends Component{
   downloadCSV = () => {
     var data = [
         ["part id", this.props.currentPart.partId],
-        ["part name", this.props.currentPart.partId],
+        ["part name", this.props.currentPart.partName],
         ["company id", this.props.currentPart.companyId],
         ["company name", this.props.currentPart.companyName],
         ["", ""],

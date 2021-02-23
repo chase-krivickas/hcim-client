@@ -18,8 +18,25 @@
 
 .export {
   margin-right: 15px;
+  margin-left: 15px;
 }
 
 .smallSpace {
   margin-top: 15px;
+}
+
+.exportButton {
+  border: none;
+  background: gray;
+  color: white;
+  border-radius: 10px;
+  font-size: 15px;
+  padding: 10px;
+}
+.exportButton:hover {
+  background: lightgray;
+}
+
+#brand {
+  color: rgb(109, 105, 105);
 }

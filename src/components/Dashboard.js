@@ -28,7 +28,7 @@ class Dashboard extends Component{
         parts: null,
         field: 'Field',
         search: '',
-        export: 'Export Data'
+        export: 'Export All Data'
       };
   }
 
@@ -81,11 +81,18 @@ class Dashboard extends Component{
   }
 
   search = (event) => {
+    var searchParts = [];
     if (this.state.field === "Field") {
-      alert("Please choose search field");
+       // alert("Please choose search field");
+      for (var j = 0; j < this.props.parts.length; j++) {
+        if (Object.values(this.props.parts[j]).indexOf(this.state.search) > -1) {
+          searchParts.push(this.props.parts[j]);
+        }
+        this.setState({parts: searchParts})
+        this.setState({export: "Export Search Results"})
+      }
     } 
     else if ( this.state.search !== '' || this.state.field === "Low Count") {
-      var searchParts = [];
       for (var i = 0; i < this.props.parts.length; i++) {
         if (this.state.field === "Part Id" && this.props.parts[i].partId === this.state.search) {
           searchParts.push(this.props.parts[i]);
@@ -110,30 +117,29 @@ class Dashboard extends Component{
 
   clearSearch = (event) => {
     this.setState({parts: this.props.parts});
-    this.setState({export: "Export Data"})
+    this.setState({export: "Export All Data"})
   }
 
-  downloadAllCSV = () => {
-    const data = JSON.parse(JSON.stringify(this.props.parts));
-    for (var i = 0; i < data.length; i++) { 
-      delete data[i].history;
-      delete data[i].alertEmails;
-      delete data[i].createdAt;
-    }
-    return(data);
-  }
+  downloadPartsCSV = (event) => {
+    var partsList = this.props.parts;
+    if (this.state.parts!== null) {
+      partsList = this.state.parts;
+    } 
 
-  downloadSearchCSV = (event) => {
-    let data;
-    if (this.state.parts) {
-      data = JSON.parse(JSON.stringify(this.state.parts));
-    } else {
-      data = JSON.parse(JSON.stringify(this.props.parts));
-    }
-    for (var i = 0; i < data.length; i++) { 
-      delete data[i].history;
-      delete data[i].alertEmails;
-      delete data[i].createdAt;
+    var data = [];
+    for (var i=0; i < partsList.length; i++) {
+      data.push(["part id", partsList[i].partId]);
+      data.push(["part name", partsList[i].partName]);
+      data.push(["company id", partsList[i].companyId]);
+      data.push(["company name", partsList[i].companyName]);
+      data.push(["", ""]);
+      data.push(["count", "day"]);
+      for (var j=0; j<partsList[i].history.length; j++) {
+        const temp = new Date(partsList[i].history[j].day);
+        data.push([partsList[i].history[j].count, temp]);
+      }
+      data.push(["", ""]);
+      data.push(["", ""]);
     }
     return(data);
   }
@@ -145,19 +151,9 @@ class Dashboard extends Component{
             <div className="wrapper">
             <Row>
               <Col>
-                <h3>Dashboard</h3>
+                <h3 id="brand">Consumable Inventory Manager</h3>
               </Col>
-              <Col>
-                <Row className="justify-content-md-center">
-                  <Button
-                    onClick={this.goToAdd}
-                    variant="danger"
-                  >
-                    Add Part for Tracking
-                  </Button>
-                </Row>
-              </Col>
-              <Col>
+              <Col xs lg="1">
                 <Row className="justify-content-md-end"> 
                   <Button onClick={this.refresh} variant="danger">
                     <FontAwesomeIcon icon={faSync}/>
@@ -171,9 +167,9 @@ class Dashboard extends Component{
             <div className="wrapper">
             <Row>
               <Col>
-                <h3>Dashboard</h3>
+              <h3 id="brand">Consumable Inventory Manager</h3>
               </Col>
-              <Col>
+              <Col xs lg="1">
                 <Row className="justify-content-md-end"> 
                   <Button onClick={this.refresh} variant="danger">
                     <FontAwesomeIcon icon={faSync}/>
@@ -260,28 +256,57 @@ class Dashboard extends Component{
             </>
           )}
           
-          <div className="export">
-            <Row className="justify-content-md-end">
+          {/* <Row className="justify-content-md-end">
               <Button variant="danger">{this.state.export}</Button>
-            </Row>
+            </Row> */}
+          <div className="export">
+          <Row>
+            <Col>
+                { this.props.roleName==="Customer" ? (
+                  <>
+                    <Row>
+                      <Button
+                        onClick={this.goToAdd}
+                        variant="danger"
+                      >
+                        Add Part for Tracking
+                      </Button>
+                    </Row>
+                  </>
+                ):(
+                  <>
+                                  
+                  </>
+                )}
+            </Col>
+            <Col>
+              <Row className="justify-content-md-end">
+                <CsvDownload className="exportButton" data={this.downloadPartsCSV()} filename="all.csv">
+                  {this.state.export}
+                </CsvDownload>
+              </Row>
+            </Col>
+          </Row>
           </div>
+
+          {/* <div className="export">
+            <Row className="justify-content-md-end">
+              <CsvDownload className="exportButton" data={this.downloadPartsCSV()} filename="all.csv">
+                {this.state.export}
+              </CsvDownload>
+            </Row>
+          </div> */}
 
           <div className="smallSpace"></div>
 
-          <CsvDownload data={this.downloadAllCSV()} filename="all.csv">
-            Download all as .csv
-          </CsvDownload>
-
-          <CsvDownload data={this.downloadSearchCSV()} filename="results.csv">
-            Download search results as .csv
-          </CsvDownload>
+          
 
           <Table striped bordered hover size="md">
 
             <thead>
               <tr>
-                <th>Part Number</th>
                 <th>Part Name</th>
+                <th>Part Number</th>
                 <th>Current Count</th>
                 <th>Minimum Count</th>
                 <th>Company Name</th>

@@ -5,7 +5,7 @@ import Nav from "react-bootstrap/Nav";
 import { LinkContainer } from "react-router-bootstrap";
 import "../css/Navbar.css";
 import { connect } from 'react-redux';
-import logo from "../media/hypertherm_logo.png";
+import logo from "../media/hcim-logo.png";
 
 const mapStateToProps = (reduxState) => ({
     isAuthenticated: reduxState.auth.authenticated,
