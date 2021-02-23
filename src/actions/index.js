@@ -157,8 +157,8 @@ export function loginUser({ password, username }, history) {
             localStorage.setItem('companyId', resp.data.companyId);
             localStorage.setItem('companyName', resp.data.companyName);
             localStorage.setItem('roleName', resp.data.roleName);
-            localStorage.setItem('permissionsList', resp.data.permissionsList);
-            localStorage.setItem('alertEmails', resp.data.alertEmails);
+            localStorage.setItem('permissionsList', JSON.stringify(resp.data.permissionsList));
+            localStorage.setItem('alertEmails', JSON.stringify(resp.data.alertEmails));
             localStorage.setItem('parts', JSON.stringify([]));
             localStorage.setItem('currentPart', JSON.stringify({}));
             history.push('/dashboard');
@@ -223,8 +223,8 @@ export function updateCompany( { companyName, roleName, addEmail, removeEmail, a
             localStorage.setItem('companyId', resp.data.companyId);
             localStorage.setItem('companyName', resp.data.companyName);
             localStorage.setItem('roleName', resp.data.roleName);
-            localStorage.setItem('permissionsList', resp.data.permissionsList);
-            localStorage.setItem('alertEmails', resp.data.alertEmails);
+            localStorage.setItem('permissionsList', JSON.stringify(resp.data.permissionsList));
+            localStorage.setItem('alertEmails', JSON.stringify(resp.data.alertEmails));
             history.go(0);
           })
           .catch((error) => {

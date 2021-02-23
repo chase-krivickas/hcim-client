@@ -2,7 +2,7 @@ import { Component } from "react";
 import React from "react";
 import { connect } from 'react-redux';
 import { createPart } from '../actions/index';
-import { Row, Col, Container, Dropdown, DropdownButton } from "react-bootstrap";
+import { Container, Dropdown, DropdownButton } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 import LoaderButton from "./LoaderButton";
 import Button from "react-bootstrap/Button";

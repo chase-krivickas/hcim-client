@@ -1,10 +1,13 @@
 import React from "react";
 import Form from "react-bootstrap/Form";
+import { Row, Button } from "react-bootstrap"
 import LoaderButton from "./LoaderButton";
-import "../css/Signup.css";
+import "../css/ChangePassword.css";
 import { Component } from "react";
 import { connect } from 'react-redux';
 import { changePassword } from '../actions/index';
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 class ChangePassword extends Component {
     constructor(props) {
@@ -52,12 +55,22 @@ class ChangePassword extends Component {
         this.setState({ confirmNewPassword: event.target.value });
     }
 
+    goBack = (event) => {
+        this.props.history.push('/settings');
+    }
+
     render() {
         return (
             <div>
-                <div className="lander">
-                    <h1>Confirm Account</h1>
+                <div className="backButton"> 
+                <Row>
+                    <Button variant="danger" size='sm' onClick={this.goBack}><FontAwesomeIcon icon={faArrowLeft}/></Button>
+                </Row>
                 </div>
+                <div className="lander">
+                    <h1>Change Password</h1>
+                </div>
+                <div className="change">
                 <Form onSubmit={this.handleSubmit}>
                     <Form.Group controlId="oldPassowrd" size="lg">
                         <Form.Label>Old Password</Form.Label>
@@ -87,12 +100,13 @@ class ChangePassword extends Component {
                         block
                         size="lg"
                         type="submit"
-                        variant="success"
+                        variant="danger"
                         isLoading={this.state.isLoading}
                     >
                         Change Password
                     </LoaderButton>
                 </Form>
+                </div>
             </div>
         );
     }

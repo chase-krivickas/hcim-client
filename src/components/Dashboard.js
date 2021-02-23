@@ -40,9 +40,9 @@ class Dashboard extends Component{
         count = 10;
       }
     }
-    const temp  = localStorage.getItem('permissionsList');
+    const temp  = JSON.parse(localStorage.getItem('permissionsList'));
     const data = {
-      permissionsList: temp.split(","),
+      permissionsList: temp,
       roleName: this.props.roleName,
     }
     this.props.fetchParts(data);
@@ -71,9 +71,9 @@ class Dashboard extends Component{
   }
 
   refresh = (event) => {
-    const temp  = localStorage.getItem('permissionsList');
+    const temp  = JSON.parse(localStorage.getItem('permissionsList'));
     const data = {
-      permissionsList: temp.split(","),
+      permissionsList: temp,
     }
     this.props.fetchParts(data);
   }
