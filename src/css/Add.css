@@ -1,15 +1,16 @@
 @media all and (min-width: 480px) {
-    .Signup {
+    .Add {
       padding: 20px 0;
       padding-bottom: 60px;
     }
   
-    .Signup form {
+    .Add form {
       margin: 0 auto;
-      max-width: 320px;
+      max-width: 500px;
     }
   }
-#heading {
-  text-align: center;
-  align-self: center;
+
+#header {
+    align-items: center;
+    text-align: center;
 }

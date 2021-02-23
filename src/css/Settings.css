@@ -1,0 +1,35 @@
+#spacer {
+    margin-top: 20px;
+}
+
+#spacer2 {
+    margin-top: 10px;
+}
+
+.badge {
+    margin: 5px;
+    padding: 8px;
+}
+
+.bigBadge {
+    padding: 10px;
+}
+
+@media all and (min-width: 480px) {
+    .settings {
+      padding: 20px 0;
+      padding-bottom: 100px;
+      margin: 0 auto;
+      max-width: 500px;
+    }
+  
+  }
+
+.emailsCont {
+    align-items: center;
+}
+
+.lander {
+    align-items: center;
+    text-align: center;
+}
