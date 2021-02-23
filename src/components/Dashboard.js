@@ -6,6 +6,7 @@ import Button from "react-bootstrap/Button";
 import { fetchParts } from '../actions/index';
 import PartSmallView from './PartSmallView';
 import { Table, InputGroup, DropdownButton, Dropdown, FormControl } from "react-bootstrap";
+import CsvDownload from 'react-json-to-csv'
 
 
 const mapStateToProps = (reduxState) => ({
@@ -99,6 +100,31 @@ class Dashboard extends Component{
     this.setState({parts: this.props.parts});
   }
 
+  downloadAllCSV = () => {
+    const data = JSON.parse(JSON.stringify(this.props.parts));
+    for (var i = 0; i < data.length; i++) { 
+      delete data[i].history;
+      delete data[i].alertEmails;
+      delete data[i].createdAt;
+    }
+    return(data);
+  }
+
+  downloadSearchCSV = (event) => {
+    let data;
+    if (this.state.parts) {
+      data = JSON.parse(JSON.stringify(this.state.parts));
+    } else {
+      data = JSON.parse(JSON.stringify(this.props.parts));
+    }
+    for (var i = 0; i < data.length; i++) { 
+      delete data[i].history;
+      delete data[i].alertEmails;
+      delete data[i].createdAt;
+    }
+    return(data);
+  }
+
   render() {
       return(
         <div>
@@ -168,6 +194,14 @@ class Dashboard extends Component{
           <Button onClick={this.clearSearch}>
             Clear Search
           </Button>
+
+          <CsvDownload data={this.downloadAllCSV()} filename="all.csv">
+            Download all as .csv
+          </CsvDownload>
+
+          <CsvDownload data={this.downloadSearchCSV()} filename="results.csv">
+            Download search results as .csv
+          </CsvDownload>
 
           <Table striped bordered hover size="sm">
             <thead>

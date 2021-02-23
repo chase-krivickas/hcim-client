@@ -4,6 +4,7 @@ import "../css/Settings.css";
 import { connect } from 'react-redux';
 import { Container, Col, Row, InputGroup, FormControl, Button } from "react-bootstrap";
 import { updatePart } from '../actions/index';
+import CsvDownload from 'react-json-to-csv'
 
 
 const mapStateToProps = (reduxState) => ({
@@ -68,6 +69,16 @@ class Part extends Component{
 
   goToDash = (event) => {
     this.props.history.push('/dashboard');
+  }
+
+  downloadCSV = () => {
+    const data = JSON.parse(JSON.stringify([this.props.currentPart]));
+    for (var i = 0; i < data.length; i++) { 
+      delete data[i].history;
+      delete data[i].alertEmails;
+      delete data[i].createdAt;
+    }
+    return(data);
   }
 
   render() {
@@ -156,10 +167,10 @@ class Part extends Component{
                     />
                     <p>{JSON.stringify(this.props.currentPart.history)}</p>
                     <Row>
-                            <Button>
-                                Export data to .csv
-                            </Button>
-                        </Row>
+                    <CsvDownload data={this.downloadCSV()} filename={this.props.currentPart.partName+".csv"}>
+                        Export to .csv
+                    </CsvDownload>
+                    </Row>
                     </Col>
                 </Row>
             </Container>
