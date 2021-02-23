@@ -25,7 +25,9 @@ class Part extends Component{
   constructor(props) {
       super(props);
 
-      var data = []
+      var data = [];
+      var count = [];
+      var day = [];
       for (var i = 0; i < this.props.currentPart.history.length; i ++) {
         const date = new Date(this.props.currentPart.history[i].day)
         const point = {
@@ -33,6 +35,8 @@ class Part extends Component{
             y: this.props.currentPart.history[i].count,
         };
         data.push(point);
+        day.push(String(date));
+        count.push(this.props.currentPart.history[i].count);
       }
   
       this.state = {
@@ -44,6 +48,8 @@ class Part extends Component{
         currCount: '',
         data: data, 
         delete: '', 
+        count: count,
+        date: day,
       };
   }
 
@@ -90,11 +96,17 @@ class Part extends Component{
   }
   
   downloadCSV = () => {
-    const data = JSON.parse(JSON.stringify([this.props.currentPart]));
-    for (var i = 0; i < data.length; i++) { 
-      delete data[i].history;
-      delete data[i].alertEmails;
-      delete data[i].createdAt;
+    var data = [
+        ["part id", this.props.currentPart.partId],
+        ["part name", this.props.currentPart.partId],
+        ["company id", this.props.currentPart.companyId],
+        ["company name", this.props.currentPart.companyName],
+        ["", ""],
+        ["count", "day"]
+    ];
+    for (var i=0; i<this.props.currentPart.history.length; i++) {
+        const temp = new Date(this.props.currentPart.history[i].day);
+        data.push([this.props.currentPart.history[i].count, temp]);
     }
     return(data);
   }
@@ -202,9 +214,9 @@ class Part extends Component{
                 <div id="spacer2"></div>
 
                 <Row className="justify-content-md-end">
-                    <Button variant="danger">
-                        Export data to .csv
-                    </Button>
+                    <CsvDownload className="exportButton" data={this.downloadCSV()} filename={this.props.currentPart.partName+".csv"}>
+                        Export to .csv
+                    </CsvDownload>
                 </Row>
 
                 <div id="spacer"></div>
@@ -235,6 +247,8 @@ class Part extends Component{
                         </InputGroup>
                     </Row>
                 </Container>
+
+                
 
                 <div id="bottom_spacer"></div>
 
@@ -285,7 +299,7 @@ class Part extends Component{
                 <div id="spacer2"></div>
 
                 <Row className="justify-content-md-end">
-                    <CsvDownload data={this.downloadCSV()} filename={this.props.currentPart.partName+".csv"}>
+                    <CsvDownload  className="exportButton" data={this.downloadCSV()} filename={this.props.currentPart.partName+".csv"}>
                         Export to .csv
                     </CsvDownload>
                 </Row>

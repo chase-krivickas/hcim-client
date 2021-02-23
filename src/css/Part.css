@@ -13,3 +13,12 @@
 #company_info {
     color: gray;
 }
+
+.exportButton {
+    border: none;
+    background: gray;
+    color: white;
+    border-radius: 10px;
+    font-size: 15px;
+    padding: 10px;
+}
