@@ -27,6 +27,7 @@ class Dashboard extends Component{
         parts: null,
         field: 'Field',
         search: '',
+        export: 'Export Data'
       };
   }
 
@@ -101,12 +102,14 @@ class Dashboard extends Component{
           searchParts.push(this.props.parts[i]);
         }
         this.setState({parts: searchParts})
+        this.setState({export: "Export Search Results"})
       }
     }
   }
 
   clearSearch = (event) => {
     this.setState({parts: this.props.parts});
+    this.setState({export: "Export Data"})
   }
 
   render() {
@@ -231,7 +234,13 @@ class Dashboard extends Component{
             </>
           )}
           
-          
+          <div className="export">
+            <Row className="justify-content-md-end">
+              <Button variant="danger">{this.state.export}</Button>
+            </Row>
+          </div>
+
+          <div className="smallSpace"></div>
 
           <Table striped bordered hover size="md">
             <thead>
