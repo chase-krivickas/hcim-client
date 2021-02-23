@@ -7,6 +7,7 @@ import { updatePart, deletePart } from '../actions/index';
 import { CanvasJSChart } from 'canvasjs-react-charts';
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import CsvDownload from 'react-json-to-csv'
 
 
 const mapStateToProps = (reduxState) => ({
@@ -87,7 +88,17 @@ class Part extends Component{
   goToDash = (event) => {
     this.props.history.push('/dashboard');
   }
-
+  
+  downloadCSV = () => {
+    const data = JSON.parse(JSON.stringify([this.props.currentPart]));
+    for (var i = 0; i < data.length; i++) { 
+      delete data[i].history;
+      delete data[i].alertEmails;
+      delete data[i].createdAt;
+    }
+    return(data);
+  }
+  
   deleteEntry = (event) => {
       if (this.state.delete === "delete" || this.state.delete === "Delete") {
           console.log("delete");
@@ -274,9 +285,9 @@ class Part extends Component{
                 <div id="spacer2"></div>
 
                 <Row className="justify-content-md-end">
-                    <Button variant="danger">
-                        Export data to .csv
-                    </Button>
+                    <CsvDownload data={this.downloadCSV()} filename={this.props.currentPart.partName+".csv"}>
+                        Export to .csv
+                    </CsvDownload>
                 </Row>
 
                 <div id="bottom_spacer"></div>

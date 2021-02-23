@@ -8,6 +8,7 @@ import PartSmallView from './PartSmallView';
 import { Table, InputGroup, DropdownButton, Dropdown, FormControl, Col, Row } from "react-bootstrap";
 import { faSync } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import CsvDownload from 'react-json-to-csv'
 
 const mapStateToProps = (reduxState) => ({
     isAuthenticated: reduxState.auth.authenticated,
@@ -110,6 +111,31 @@ class Dashboard extends Component{
   clearSearch = (event) => {
     this.setState({parts: this.props.parts});
     this.setState({export: "Export Data"})
+  }
+
+  downloadAllCSV = () => {
+    const data = JSON.parse(JSON.stringify(this.props.parts));
+    for (var i = 0; i < data.length; i++) { 
+      delete data[i].history;
+      delete data[i].alertEmails;
+      delete data[i].createdAt;
+    }
+    return(data);
+  }
+
+  downloadSearchCSV = (event) => {
+    let data;
+    if (this.state.parts) {
+      data = JSON.parse(JSON.stringify(this.state.parts));
+    } else {
+      data = JSON.parse(JSON.stringify(this.props.parts));
+    }
+    for (var i = 0; i < data.length; i++) { 
+      delete data[i].history;
+      delete data[i].alertEmails;
+      delete data[i].createdAt;
+    }
+    return(data);
   }
 
   render() {
@@ -242,7 +268,16 @@ class Dashboard extends Component{
 
           <div className="smallSpace"></div>
 
+          <CsvDownload data={this.downloadAllCSV()} filename="all.csv">
+            Download all as .csv
+          </CsvDownload>
+
+          <CsvDownload data={this.downloadSearchCSV()} filename="results.csv">
+            Download search results as .csv
+          </CsvDownload>
+
           <Table striped bordered hover size="md">
+
             <thead>
               <tr>
                 <th>Part Number</th>
