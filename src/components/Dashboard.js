@@ -1,12 +1,13 @@
 import { Component } from "react";
 import React from "react";
-import "../css/Settings.css";
+import "../css/Dashboard.css";
 import { connect } from 'react-redux';
 import Button from "react-bootstrap/Button";
 import { fetchParts } from '../actions/index';
 import PartSmallView from './PartSmallView';
 import { Table, InputGroup, DropdownButton, Dropdown, FormControl, Col, Row } from "react-bootstrap";
-
+import { faSync } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const mapStateToProps = (reduxState) => ({
     isAuthenticated: reduxState.auth.authenticated,
@@ -26,6 +27,7 @@ class Dashboard extends Component{
         parts: null,
         field: 'Field',
         search: '',
+        export: 'Export Data'
       };
   }
 
@@ -39,9 +41,9 @@ class Dashboard extends Component{
         count = 10;
       }
     }
-    const temp  = localStorage.getItem('permissionsList');
+    const temp  = JSON.parse(localStorage.getItem('permissionsList'));
     const data = {
-      permissionsList: temp.split(","),
+      permissionsList: temp,
       roleName: this.props.roleName,
     }
     this.props.fetchParts(data);
@@ -70,9 +72,9 @@ class Dashboard extends Component{
   }
 
   refresh = (event) => {
-    const temp  = localStorage.getItem('permissionsList');
+    const temp  = JSON.parse(localStorage.getItem('permissionsList'));
     const data = {
-      permissionsList: temp.split(","),
+      permissionsList: temp,
     }
     this.props.fetchParts(data);
   }
@@ -100,33 +102,68 @@ class Dashboard extends Component{
           searchParts.push(this.props.parts[i]);
         }
         this.setState({parts: searchParts})
+        this.setState({export: "Export Search Results"})
       }
     }
   }
 
   clearSearch = (event) => {
     this.setState({parts: this.props.parts});
+    this.setState({export: "Export Data"})
   }
 
   render() {
       return(
         <div>
           { this.props.roleName==="Customer" ? (
-            <>
-            <Button
-              onClick={this.goToAdd}
-            >
-              Add Part for Tracking
-            </Button>
-          </>
+            <div className="wrapper">
+            <Row>
+              <Col>
+                <h3>Dashboard</h3>
+              </Col>
+              <Col>
+                <Row className="justify-content-md-center">
+                  <Button
+                    onClick={this.goToAdd}
+                    variant="danger"
+                  >
+                    Add Part for Tracking
+                  </Button>
+                </Row>
+              </Col>
+              <Col>
+                <Row className="justify-content-md-end"> 
+                  <Button onClick={this.refresh} variant="danger">
+                    <FontAwesomeIcon icon={faSync}/>
+                  </Button>
+                </Row>
+              </Col>
+            </Row>
+            
+          </div>
           ):(
-            <>
-            </>
+            <div className="wrapper">
+            <Row>
+              <Col>
+                <h3>Dashboard</h3>
+              </Col>
+              <Col>
+                <Row className="justify-content-md-end"> 
+                  <Button onClick={this.refresh} variant="danger">
+                    <FontAwesomeIcon icon={faSync}/>
+                  </Button>
+                </Row>
+              </Col>
+            </Row>
+            
+          </div>
           )}
 
+
+          
           { this.props.roleName==="Customer" ? (
             <>
-            <InputGroup className="mb-3">
+            <InputGroup size="lg" className="mb-3">
             <DropdownButton
               as={InputGroup.Prepend}
               variant="outline-secondary"
@@ -142,17 +179,25 @@ class Dashboard extends Component{
             <FormControl aria-describedby="basic-addon1" placeholder="Search" onChange={this.updateSearch}/>
             <InputGroup.Append>
              <Button 
-              variant="outline-secondary"
+              variant="danger"
               onClick={this.search}
               >
                 Search
+              </Button>
+            </InputGroup.Append>
+            <InputGroup.Append>
+             <Button 
+              variant="outline-secondary"
+              onClick={this.clearSearch}
+              >
+                Clear Search
               </Button>
             </InputGroup.Append>
           </InputGroup>
             </>
           ):(
             <>
-            <InputGroup className="mb-3">
+            <InputGroup className="mb-3" size="lg">
             <DropdownButton
               as={InputGroup.Prepend}
               variant="outline-secondary"
@@ -170,30 +215,34 @@ class Dashboard extends Component{
             <FormControl aria-describedby="basic-addon1" placeholder="Search" onChange={this.updateSearch}/>
             <InputGroup.Append>
              <Button 
-              variant="outline-secondary"
+              variant="danger"
               onClick={this.search}
               >
                 Search
               </Button>
             </InputGroup.Append>
+            <InputGroup.Append>
+             <Button 
+              variant="outline-secondary"
+              onClick={this.clearSearch}
+              >
+                Clear Search
+              </Button>
+            </InputGroup.Append>
+            
           </InputGroup>
             </>
           )}
           
-          <Row>
-            <Col>
-              <Button onClick={this.refresh}>
-                Refresh
-              </Button>
-            </Col>
-            <Col>
-              <Button onClick={this.clearSearch}>
-                Clear Search
-              </Button>
-            </Col>
-          </Row>
+          <div className="export">
+            <Row className="justify-content-md-end">
+              <Button variant="danger">{this.state.export}</Button>
+            </Row>
+          </div>
 
-          <Table striped bordered hover size="sm">
+          <div className="smallSpace"></div>
+
+          <Table striped bordered hover size="md">
             <thead>
               <tr>
                 <th>Part Number</th>

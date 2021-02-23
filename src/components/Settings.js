@@ -2,8 +2,9 @@ import { Component } from "react";
 import React from "react";
 import "../css/Settings.css";
 import { connect } from 'react-redux';
-import { Container, Row, InputGroup, FormControl } from "react-bootstrap";
+import { Container, Col, Row, InputGroup, FormControl } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
+import { Badge } from "react-bootstrap"
 import { updateCompany } from '../actions/index';
 
 const mapStateToProps = (reduxState) => ({
@@ -18,6 +19,19 @@ const mapStateToProps = (reduxState) => ({
 class Settings extends Component{
     constructor(props) {
         super(props);
+
+        var temp = "";
+        var first = true;
+        for (var i=0; i<this.props.alertEmails.length; i++) {
+          if (first) {
+            temp = temp + this.props.alertEmails[i];
+            first = false;
+          } else {
+            temp = temp + ", " + this.props.alertEmails[i];
+          }
+        }
+
+
         this.state = {
           edit: true,
           space: '_______',
@@ -32,6 +46,7 @@ class Settings extends Component{
           // permissionsList: this.props.permissionsList.split(','),
           permissionsList: this.props.permissionsList,
           roleName: this.props.roleName,
+          emails: temp,
         };
       }
 
@@ -82,6 +97,17 @@ class Settings extends Component{
       };
     }
 
+    showEmails() {
+      return this.props.alertEmails.map((email) => {
+        return (<Badge className="badge" key={email} variant="secondary">{email}</Badge>);
+      });
+    }
+
+    showPermissions() {
+      return this.props.permissionsList.map((perm) => {
+        return (<Badge className="badge" key={perm} variant="secondary">{perm}</Badge>);
+      });
+    }
     render() {
         return(
           <div>
@@ -89,42 +115,78 @@ class Settings extends Component{
                <h1>Account Settings</h1>
              </div>
 
+            <div id="spacer"/>
+
              <Container>
                <Row>
-                 <h5>Company: {this.props.companyName}</h5>
-               </Row>
-               <Row>
-                 <h5>Company Id: {this.props.companyId}</h5>
-               </Row>
-               <Row>
-                 <h5>Role: {this.props.roleName}</h5>
-               </Row>
+
                
-             </Container>
+               <Col> 
+                <Row className="justify-content-md-center">
+                  <Badge className="bigBadge" variant="danger"><h4>Account information</h4></Badge>
+                </Row>
+                <div id="spacer2"/>
+                <Row className="justify-content-md-center">
+                  <p><Badge variant="secondary">Company:</Badge> {this.props.companyName}</p>
+                </Row>
+                <Row className="justify-content-md-center">
+                  <p><Badge variant="secondary">Company Id:</Badge> {this.props.companyId}</p>
+                </Row>
+                <Row className="justify-content-md-center">
+                  <p><Badge variant="secondary">Role:</Badge> {this.props.roleName}</p>
+                </Row>
+               </Col>
+             
 
-             <div onClick={this.goToChangePassword}>Change Password</div>
-
-
-            {this.props.roleName!=="Customer" ? (
-              <>
-              <Container>
-              <Row>
-                <h1>{this.state.space}</h1>
-              </Row>
-              <Row>
-                <h5>List of company ids that you have permission to see:</h5>
-              </Row>
-              <Row>
-                <p> </p>
-              </Row>
-              <Row>
-                {/* <p>{this.state.permissionsList.split(',').map((x) => `${x}`).join(', ')}</p> */}
-                <p>{this.props.permissionsList}</p>
-              </Row>
-              <Row>
-                <p> </p>
+             
+             
+              <Col> 
+                <Row className="justify-content-md-center">
+                  <Badge className="bigBadge" variant="danger"><h4>Password</h4></Badge>
+                </Row>
+                <div id="spacer2"/>
+                <Row className="justify-content-md-center">
+                  <Button
+                    variant="secondary"
+                    onClick={this.goToChangePassword}
+                    >
+                      Change Password
+                  </Button>
+                </Row>
+              </Col>
               </Row>
             </Container>
+
+            <div id="spacer"/>
+
+            {this.props.roleName==="Reseller" ? (
+              <>
+              <div className="emailsCont"> 
+              <Container>
+              <Row className="justify-content-md-center">
+                <Badge className="bigBadge" variant="danger"><h4>Permissions</h4></Badge>
+              </Row>
+              <div id="spacer2"/>
+              <Row className="justify-content-md-center">
+                <h5>List of company ID's that you have permission to see:</h5>
+              </Row>
+              <Row className="justify-content-md-center">
+                <h5>
+                {this.showPermissions()}
+                </h5>
+                
+              </Row>
+              <Row className="justify-content-md-center">
+                <p>Add or remove companies from your permissions by company ID.</p>
+              </Row>
+              <Row>
+                <p> </p>
+              </Row>
+              
+              </Container>
+              </div>
+
+              <div className="settings"> 
             <InputGroup className="mb-3">
               <FormControl
                 placeholder="company id to add"
@@ -155,27 +217,39 @@ class Settings extends Component{
                   Remove</Button>
               </InputGroup.Append>
             </InputGroup>
+            </div>
           </>
             ):(
               <>
+
+              </>
+            )}
+
+            { this.props.roleName==="Customer" ? (
+              <>
+                              <div className="emailsCont"> 
               <Container>
-              <Row>
-                <h1>{this.state.space}</h1>
+              <Row className="justify-content-md-center">
+                <Badge className="bigBadge" variant="danger"><h4>Alert Emails</h4></Badge>
               </Row>
-              <Row>
+              <div id="spacer2"/>
+              <Row className="justify-content-md-center">
                 <h5>List of emails that will be alerted when inventory is low:</h5>
               </Row>
+              <Row className="justify-content-md-center">
+                <h5>
+                {this.showEmails()}
+                </h5>
+                
+              </Row>
               <Row>
                 <p> </p>
               </Row>
-              <Row>
-                {/* <p>{this.state.alertEmails.split(',').map((x) => `${x}`).join(', ')}</p> */}
-                <p>{this.props.alertEmails}</p>
-              </Row>
-              <Row>
-                <p> </p>
-              </Row>
-            </Container>
+              
+              </Container>
+              </div>
+
+            <div className="settings"> 
             <InputGroup className="mb-3">
               <FormControl
                 placeholder="enter email to add (example@example.com)"
@@ -206,6 +280,10 @@ class Settings extends Component{
                   Remove</Button>
               </InputGroup.Append>
             </InputGroup>
+            </div>
+              </>
+            ):(
+              <>
               </>
             )}
             </div>

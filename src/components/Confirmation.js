@@ -1,7 +1,7 @@
 import React from "react";
 import Form from "react-bootstrap/Form";
 import LoaderButton from "./LoaderButton";
-import "../css/Signup.css";
+import "../css/Confirmation.css";
 import { Component } from "react";
 import { connect } from 'react-redux';
 import { confirmUser, resendConfirmationCode } from '../actions/index';
@@ -66,11 +66,9 @@ class Confirmation extends Component {
 
   render() {
     return (
-      <div>
-      <div className="lander">
-        <h1>Confirm Account</h1>
-      </div>
+      <div className="Confirmation">
       <Form onSubmit={this.handleSubmit}>
+        <h1 id="heading">Confirm Account</h1>
         <Form.Group controlId="username" size="lg">
           <Form.Label>Username</Form.Label>
           <Form.Control
@@ -101,7 +99,7 @@ class Confirmation extends Component {
           block
           size="lg"
           type="submit"
-          variant="success"
+          variant="danger"
           isLoading={this.state.isLoading}
         >
           Verify
@@ -109,7 +107,7 @@ class Confirmation extends Component {
         <LoaderButton
               block
               size="lg"
-              variant="success"
+              variant="secondary"
               isLoading={this.state.isLoading}
               onClick={this.resendCode}
             >

@@ -68,7 +68,7 @@ class Login extends Component {
               onChange={this.updatePassword}
             />
           </Form.Group>
-          <LoaderButton block size="lg" type="submit" isLoading={this.state.isLoading}>
+          <LoaderButton variant="danger" block size="lg" type="submit" isLoading={this.state.isLoading}>
             Login
           </LoaderButton>
         </Form>

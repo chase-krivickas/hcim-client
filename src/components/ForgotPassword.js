@@ -1,7 +1,7 @@
 import React from "react";
 import Form from "react-bootstrap/Form";
 import LoaderButton from "./LoaderButton";
-import "../css/Signup.css";
+import "../css/ForgotPassword.css";
 import { Component } from "react";
 import { connect } from 'react-redux';
 import { forgotPassword, resetPassword } from '../actions/index';
@@ -74,11 +74,10 @@ class ForgotPassword extends Component {
 
     render() {
         return (
-            <div>
-                <div className="lander">
-                    <h1>Confirm Account</h1>
-                </div>
+            <div className="FPassword">
                 <Form onSubmit={this.handleSubmit}>
+                    <h1 id="heading">Forgot Password</h1>
+                    <p id="subheading">Enter username, click 'Send Reset Code', and check email for code.</p>
                     <Form.Group controlId="username" size="lg">
                         <Form.Label>Username</Form.Label>
                         <Form.Control
@@ -90,14 +89,15 @@ class ForgotPassword extends Component {
                     <LoaderButton
                         block
                         size="lg"
-                        variant="success"
+                        variant="secondary"
                         isLoading={this.state.isLoading}
                         onClick={this.sendCode}
                     >
-                        Send Code
+                        Send Reset Code
                     </LoaderButton>
+                    <div id="spacer"></div>
                     <Form.Group controlId="confirmationCode" size="lg">
-                        <Form.Label>Confirmation Code</Form.Label>
+                        <Form.Label>Reset Code</Form.Label>
                         <Form.Control
                             type="tel"
                             onChange={this.updateConfirmationCode}
@@ -105,7 +105,7 @@ class ForgotPassword extends Component {
                         />
                     </Form.Group>
                     <Form.Group controlId="password" size="lg">
-                        <Form.Label>Password</Form.Label>
+                        <Form.Label>New Password</Form.Label>
                         <Form.Control
                             type="password"
                             onChange={this.updatePassword}
@@ -113,7 +113,7 @@ class ForgotPassword extends Component {
                         />
                     </Form.Group>
                     <Form.Group controlId="confirmPassword" size="lg">
-                        <Form.Label>Confirmation Password</Form.Label>
+                        <Form.Label>Confirmation New Password</Form.Label>
                         <Form.Control
                             type="password"
                             onChange={this.updateConfirmPassword}
@@ -124,7 +124,7 @@ class ForgotPassword extends Component {
                         block
                         size="lg"
                         type="submit"
-                        variant="success"
+                        variant="danger"
                         isLoading={this.state.isLoading}
                     >
                         Reset Password

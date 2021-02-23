@@ -51,8 +51,8 @@ if (token) {
     companyId: localStorage.getItem('companyId'),
     companyName: localStorage.getItem('companyName'),
     roleName: localStorage.getItem('roleName'),
-    permissionsList: localStorage.getItem('permissionsList'),
-    alertEmails: localStorage.getItem('alertEmails'),
+    permissionsList: JSON.parse(localStorage.getItem('permissionsList')),
+    alertEmails: JSON.parse(localStorage.getItem('alertEmails')),
     parts: JSON.parse(localStorage.getItem('parts')) || [],
     currentPart: JSON.parse(localStorage.getItem('currentPart')) || {},
   };

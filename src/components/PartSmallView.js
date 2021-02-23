@@ -26,7 +26,7 @@ class PartSmallView extends Component{
 
   render() {
       return(
-        <tr className={parseInt(this.props.part.currCount) <= parseInt(this.props.part.minCount) ? 'below' : ''} onClick={this.goToPart}>
+        <tr className={parseInt(this.props.part.currCount) <= parseInt(this.props.part.minCount) ? 'below' : 'over'} onClick={this.goToPart}>
             <td>{this.props.part.partId}</td>
             <td>{this.props.part.partName}</td>
             <td>{this.props.part.currCount}</td>

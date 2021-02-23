@@ -1,0 +1,15 @@
+@media all and (min-width: 480px) {
+    .Confirmation {
+        padding: 20px 0;
+        padding-bottom: 60px;
+    }
+  
+    .Confirmation form {
+      margin: 0 auto;
+      max-width: 320px;
+    }
+  }
+  #heading {
+    text-align: center;
+    align-self: center;
+  }
