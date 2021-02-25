@@ -1,30 +1,6 @@
 export const partsList = [
     {
-        partId: 420228,
-        partName: "Nozzle Retaining Cap (30 A)"
-    },
-    {
-        partId: 420237,
-        partName: "Nozzle Retaining Cap (50 A)"
-    },
-    {
-        partId: 420246,
-        partName: "Nozzle Retaining Cap (80 A)"
-    },
-    {
-        partId: 420255,
-        partName: "Nozzle Retaining Cap (130 A)"
-    },
-    {
-        partId: 420513,
-        partName: "Nozzle Retaining Cap (170 A)"
-    },
-    {
-        partId: 420273,
-        partName: "Nozzle Retaining Cap (220 A)"
-    },
-    {
-        partId: 420491,
+        partId: 420365,
         partName: "Nozzle Retaining Cap (300 A)"
     },
     {
@@ -101,39 +77,39 @@ export const partsList = [
     },
     {
         partId: 420368,
-        partName: "Watertube (30-300 A)"
+        partName: "Watertube (30 to 300 A)"
     },
     {
         partId: 420200,
-        partName: "Shield Cap (30-300 A)"
+        partName: "Shield Cap (30 to 300 A)"
     },
     {
         partId: 420228,
-        partName: "Shield (30 A))"
+        partName: "Shield (30 A)"
     },
     {
         partId: 420237,
-        partName: "Shield (50 A))"
+        partName: "Shield (50 A)"
     },
     {
         partId: 420246,
-        partName: "Shield (80 A))"
+        partName: "Shield (80 A)"
     },
     {
         partId: 420255,
-        partName: "Shield (130 A))"
+        partName: "Shield (130 A)"
     },
     {
         partId: 420513,
-        partName: "Shield (170 A))"
+        partName: "Shield (170 A)"
     },
     {
         partId: 420273,
-        partName: "Shield (220 A))"
+        partName: "Shield (220 A)"
     },
     {
         partId: 420491,
-        partName: "Shield (300 A))"
+        partName: "Shield (300 A)"
     }
 ];
 
