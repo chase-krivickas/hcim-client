@@ -126,6 +126,11 @@ class Add extends Component{
                         Choose part from dropdown or refer to Hypertherm catalog for part name and id.
                       </Form.Text>
                 </Form.Group>
+
+                <Form.Group>
+                  <a target="_blank" rel="noreferrer" href="https://www.hypertherm.com/en-US/support/system-support/maintenance-and-use/consumable-care-and-optimization/selecting-the-right-consumables/">Hypertherm Catalog</a>
+                </Form.Group>
+
                 <Form.Group size="lg">
                   <Form.Label>Part Name</Form.Label>
                   <Form.Control
