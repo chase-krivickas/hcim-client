@@ -49,6 +49,7 @@ export function signUpUser({ password, username, email, roleName, companyName },
         alert(err.message);
         dispatch(authError(err));
         history.go(0);
+        // history.push('/signup');
       });
   }
 }
@@ -67,6 +68,7 @@ export function confirmUser({ email, confirmationCode, username }, history) {
         alert(err.message);
         dispatch(authError(err));
         history.go(0);
+        // history.push('/confirmation');
       });
   }
 }
@@ -79,11 +81,13 @@ export function resendConfirmationCode({ email, username }, history) {
         console.log(response);
         alert("Confirmation code was sent to " + email);
         history.go(0);
+        // history.push('/confirmation');
       }).catch(err => {
         // error
         alert(err.message);
         dispatch(authError(err));
         history.go(0);
+        // history.push('/confirmation');
       });
   }
 }
@@ -101,6 +105,7 @@ export function forgotPassword({ username }, history) {
         alert(err.message);
         dispatch(authError(err));
         history.go(0);
+        // history.push('/forgotPassword');
       });
   }
 }
@@ -118,6 +123,7 @@ export function resetPassword({ username, code, password }, history) {
         alert(err.message);
         dispatch(authError(err));
         history.go(0);
+        // history.push('/forgotPassword');
       });
   }
 }
@@ -137,6 +143,7 @@ export function changePassword({ oldPassword, newPassword }, history) {
           alert(err.message);
           dispatch(authError(err));
           history.go(0);
+          // history.push('/settings');
         });
       }).catch(err => console.log(err));
   }
@@ -170,6 +177,7 @@ export function loginUser({ password, username }, history) {
             dispatch(authError(error));
             alert(error.message);
             history.go(0);
+            // history.push('/login');
           });
       }).catch(err => {
         // error logging in
@@ -180,6 +188,7 @@ export function loginUser({ password, username }, history) {
           dispatch(authError(err));
           alert(err.message);
           history.go(0);
+          // history.push('/login');
         }
       });
   };
@@ -226,6 +235,7 @@ export function updateCompany( { companyName, roleName, addEmail, removeEmail, a
             localStorage.setItem('permissionsList', JSON.stringify(resp.data.permissionsList));
             localStorage.setItem('alertEmails', JSON.stringify(resp.data.alertEmails));
             history.go(0);
+            // history.push('/settings');
           })
           .catch((error) => {
             // error getting user doc
@@ -263,6 +273,7 @@ export function createPart( { companyId, partId, partName, companyName, currCoun
         // error
         alert(error);
         history.go(0);
+        // history.push('/add');
         console.log(error);
       });
   }
