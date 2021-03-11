@@ -15,3 +15,12 @@ $ npm start
 ```
 $ npm run build
 ```
+
+## To deploy to surge
+In `./public/CNAME` you can change the url name of where the web app will be hosted. To deploy to surge, run:
+```
+$ npm run build
+$ cd build
+$ cp index.html 200.html
+$ surge
+```
